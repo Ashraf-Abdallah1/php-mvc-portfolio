@@ -1,0 +1,21 @@
+<nav class="navbar navbar-expand-lg navbar-dark bg-primary sticky-top px-4">
+    <a class="navbar-brand d-flex align-items-center gap-2" href="#">
+        <img src="/assets/logo-image.png" alt="logo" class="rounded-circle" width="50" height="50">
+        <span>HZ | University of Applied Sciences</span>
+    </a>
+
+    <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#mainNav">
+        <span class="navbar-toggler-icon"></span>
+    </button>
+
+    <div class="collapse navbar-collapse" id="mainNav">
+        <ul class="navbar-nav ms-auto">
+            <li class="nav-item"><a class="nav-link {% if active == 'home' %}active{% endif %}" href="/">HOME</a></li>
+            <li class="nav-item"><a class="nav-link {% if active == 'profile' %}active{% endif %}" href="/profile}">PROFILE</a></li>
+            <li class="nav-item"><a class="nav-link {% if active == 'dashboard' %}active{% endif %}" href="/dashboard">DASHBOARD</a></li>
+            <li class="nav-item"><a class="nav-link {% if active == 'blog' %}active{% endif %}" href="/blog">BLOG</a></li>
+            <li class="nav-item"><a class="nav-link {% if active == 'faq' %}active{% endif %}" href="/faq">FAQ</a></li>
+            <li class="nav-item"><a class="nav-link {% if active == 'contact' %}active{% endif %}" href="/contact">CONTACT</a></li>
+        </ul>
+    </div>
+</nav>

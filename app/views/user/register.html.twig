@@ -1,0 +1,52 @@
+{% extends 'user/partials.html.twig' %}
+{% set pageTitle = "Register" %}
+
+{% block formContent %}
+    <form method="POST" action="/register">
+
+        <div class="mb-3">
+            <label for="name" class="form-label">Name</label>
+            <input type="text"
+                   class="form-control"
+                   id="name"
+                   name="name"
+                   placeholder="name">
+            {% if errors.name %}
+                <div class="text-danger small mt-1">{{ errors.name }}</div>
+            {% endif %}
+        </div>
+
+        <div class="mb-3">
+            <label for="username" class="form-label">Username</label>
+            <input type="text"
+                   class="form-control"
+                   id="username"
+                   name="username"
+                   placeholder="unique"
+                   value="{{ old.username ?? '' }}"
+                   required>
+            {% if errors.username %}
+                <div class="text-danger small mt-1">{{ errors.username }}</div>
+            {% endif %}
+        </div>
+
+        <div class="mb-3">
+            <label for="password" class="form-label">Password</label>
+            <input type="password"
+                   class="form-control"
+                   id="password"
+                   name="password"
+                   placeholder="password"
+                   required>
+            {% if errors.password %}
+                <div class="text-danger small mt-1">{{ errors.password }}</div>
+            {% endif %}
+        </div>
+
+        <button type="submit" class="btn btn-primary w-100">Register</button>
+
+        <p class="text-center mt-3">
+            <a href="/login" class="text-decoration-none">Heb je all een account? Log in</a>
+        </p>
+    </form>
+{% endblock %}
