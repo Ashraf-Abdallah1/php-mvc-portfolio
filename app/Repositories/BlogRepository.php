@@ -31,7 +31,8 @@ class BlogRepository implements BlogRepositoryInterface
 
     public function findById(int $id): ?Blog
     {
-        return null;
+        $stmt = $this->database->run("SELECT * FROM Blogs WHERE id = :id", ['id' => $id])->fetch();
+        return $this->fromDbRow($stmt);
     }
 
     public function insert(Blog $blog): Blog

@@ -1,0 +1,20 @@
+{% extends "partials/base.html.twig" %}
+
+{% block body %}
+
+    <h1 class="container d-flex justify-content-center align-items-center mt-3 mb-5"> Blog Manager</h1>
+    <div>
+            <div class="container d-flex justify-content-center align-items-center" style="min-height: 35vh;">
+                <div class="card shadow-lg p-4" style="width: 600px; border-radius: 12px;">
+                    <h2 class="text-center mb-4 text-primary">{{ blog.title|capitalize }}</h2>
+                    <p>{{ blog.content }}</p>
+                    <p>{{ blog.date | date(dd-yy-mm) }}</p>
+
+                    <div class="d-flex gap-2">
+                        <a type="button" class="btn btn-primary" href="/blog/{{ blog.id}}/edit">Edit</a>
+                        <button class="btn btn-secondary">Remove</button>
+                    </div>
+                </div>
+            </div>
+    </div>
+{% endblock %}

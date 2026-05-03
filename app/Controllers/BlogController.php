@@ -3,6 +3,7 @@
 namespace App\Controllers;
 
 use App\Repositories\BlogRepositoryInterface;
+use Framework\Request;
 use Framework\Response;
 use Framework\ResponseFactory;
 
@@ -21,8 +22,17 @@ class BlogController
     {
         $blogs = $this->blogRepository->all();
 
-        return $this->responseFactory->view('blog/index.html.twig',[
+        return $this->responseFactory->view('blog/index.html.twig', [
             'blogs' => $blogs
+        ]);
+    }
+
+    public function show(Request $request): Response
+    {
+        $id = (int)$request->get('id');
+        $blog = $this->blogRepository->findById($id);
+        return $this->responseFactory->view('blog/show.html.twig', [
+            'blog' => $blog
         ]);
     }
 
