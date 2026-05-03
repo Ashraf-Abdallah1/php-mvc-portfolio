@@ -2,11 +2,14 @@
 
 namespace App;
 
+use App\Controllers\BlogController;
 use App\Controllers\HomeController;
 use App\Controllers\ProjectController;
 use App\Controllers\TagController;
 use App\Controllers\TaskController;
 use App\Controllers\UserController;
+use App\Repositories\BlogRepository;
+use App\Repositories\BlogRepositoryInterface;
 use App\Repositories\ProjectRepository;
 use App\Repositories\ProjectRepositoryInterface;
 use App\Repositories\TagRepository;
@@ -36,6 +39,9 @@ class ServiceProvider implements ServiceProviderInterface
         $userRepository = new UserRepository($database);
         $container->set(UserRepositoryInterface::class, $userRepository);
 
+        $blogRepository = new BlogRepository($database);
+        $container->set(BlogRepositoryInterface::class, $blogRepository);
+
         $authService = new AuthService($userRepository);
         $container->set(AuthService::class, $authService);
 
@@ -44,5 +50,8 @@ class ServiceProvider implements ServiceProviderInterface
 
         $userController = new UserController($responseFactory, $userRepository, $authService);
         $container->set(UserController::class, $userController);
+
+        $blogController = new BlogController($responseFactory, $blogRepository);
+        $container->set(BlogController::class, $blogController);
     }
 }

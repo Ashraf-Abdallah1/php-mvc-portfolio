@@ -1,0 +1,17 @@
+{% extends "blog/base.html.twig" %}
+
+{% block content %}
+    <div>
+        {% for blog in blogs %}
+            <div class="container d-flex justify-content-center align-items-center" style="min-height: 35vh;">
+                <div class="card shadow-lg p-4" style="width: 600px; border-radius: 12px;">
+                    <h2 class="text-center mb-4 text-primary">{{ blog.title|capitalize }}</h2>
+                    <p>{{ blog.content }}</p>
+                    <p>{{ blog.date | date(dd-yy-mm) }}</p>
+
+                    <a type="button" class="btn btn-info container d-flex justify-content-center align-items-center " href="/blog/{{ blog.id }}" style="width: 100px">Show</a>
+                </div>
+            </div>
+        {% endfor %}
+    </div>
+{% endblock %}

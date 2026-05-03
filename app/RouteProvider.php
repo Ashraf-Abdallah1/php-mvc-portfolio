@@ -2,6 +2,7 @@
 
 namespace App;
 
+use App\Controllers\BlogController;
 use App\Controllers\HomeController;
 use App\Controllers\ProjectController;
 use App\Controllers\TagController;
@@ -41,5 +42,9 @@ class RouteProvider implements RouteProviderInterface
 
         $router->addRoute('GET', '/login', [$userController, 'loginForm']);
         $router->addRoute('POST', '/login', [$userController, 'login']);
+
+
+        $blogController = $container->get(BlogController::class);
+        $router->addRoute('GET', '/blog', [$blogController, 'index']);
     }
 }
