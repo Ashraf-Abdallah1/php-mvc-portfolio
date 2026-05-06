@@ -4,17 +4,9 @@ namespace App;
 
 use App\Controllers\BlogController;
 use App\Controllers\HomeController;
-use App\Controllers\ProjectController;
-use App\Controllers\TagController;
-use App\Controllers\TaskController;
 use App\Controllers\UserController;
 use App\Repositories\BlogRepository;
 use App\Repositories\BlogRepositoryInterface;
-use App\Repositories\ProjectRepository;
-use App\Repositories\ProjectRepositoryInterface;
-use App\Repositories\TagRepository;
-use App\Repositories\TaskRepository;
-use App\Repositories\TaskRepositoryInterface;
 use App\Repositories\UserRepository;
 use App\Repositories\UserRepositoryInterface;
 use App\Services\AuthService;
