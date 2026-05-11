@@ -36,4 +36,8 @@ class BlogController
         ]);
     }
 
+    public function create(Request $request): Response{
+        return $this->responseFactory->view('blog/create.html.twig');
+    }
+
 }
