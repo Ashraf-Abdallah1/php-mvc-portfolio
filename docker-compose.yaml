@@ -1,6 +1,39 @@
 services:
-  #nginx
+  #depends on zorgt dat de webservice wacht tot dat een connectie is met de db
   web:
-    image: nginx:latest
+    image: php:8.2-apache
     ports:
       - "80:80"
+    environment:
+      DB_HOST: db
+      DB_USER: root
+      DB_PASSWORD: root
+      DB_NAME: test_db
+
+#./ de hele project map naar de /var/www
+    volumes:
+      - ./:/var/www
+
+ # om de apache naar de public te laten kijken
+    command: >
+      bash -c "sed -i 's#/var/www/html#/var/www/public#' /etc/apache2/sites-available/000-default.conf
+      && apache2-foreground"
+    depends_on:
+      - db
+
+
+
+
+  db:
+    image: mysql:8
+    environment:
+      MYSQL_ROOT_PASSWORD: root
+      MYSQL_DATABASE: test_db
+
+    volumes:
+      - dbdata:/var/lib/mysql
+
+
+volumes:
+  # om data opteslaan ook als de container gestopt of verwijderd
+  dbdata:
