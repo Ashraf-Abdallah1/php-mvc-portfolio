@@ -19,6 +19,8 @@ $kernel = new Kernel($config);
 
 $kernel->registerServices(new ServiceProvider());
 
+date_default_timezone_set('Europe/Amsterdam');
+
 // Define routes
 $kernel->registerRoutes(new RouteProvider());
 

@@ -2,19 +2,88 @@
 
 {% block body %}
 
-    <h1 class="container d-flex justify-content-center align-items-center mt-3 mb-5"> Blog Manager</h1>
-    <div>
-            <div class="container d-flex justify-content-center align-items-center" style="min-height: 35vh;">
-                <div class="card shadow-lg p-4" style="width: 600px; border-radius: 12px;">
-                    <h2 class="text-center mb-4 text-primary">{{ blog.title|capitalize }}</h2>
-                    <p>{{ blog.content }}</p>
-                    <p>{{ blog.date | date(dd-yy-mm) }}</p>
 
-                    <div class="d-flex gap-2">
-                        <a type="button" class="btn btn-primary" href="/blog/{{ blog.id}}/edit">Edit</a>
-                        <button class="btn btn-secondary">Remove</button>
+        <div class="container mt-5" style="max-width: 900px;">
+
+            <div class="d-flex justify-content-between align-items-center mb-4">
+                <div>
+                    <h2 class="fw-bold text-success mb-0">{{ blog.title }}</h2>
+                    <p class="text-muted mt-1">Bloginformatie en details</p>
+                </div>
+
+                <a href="/blogs" class="btn btn-outline-success px-4 shadow-sm">
+                    <i class="bi bi-arrow-left"></i> Terug
+                </a>
+            </div>
+
+
+            <div class="card shadow-lg border-0 rounded-4">
+                <div class="card-body p-4">
+
+                    <div class="d-flex align-items-center mb-4">
+                        <div class="rounded-circle bg-success bg-opacity-10 d-flex justify-content-center align-items-center"
+                             style="width: 70px; height: 70px;">
+                            <i class="bi bi-building text-success" style="font-size: 2rem;"></i>
+                        </div>
+
+                        <div class="ms-3">
+                            <h4 class="fw-bold mb-0">{{ blog.title }}</h4>
+                            <span class="text-muted">Datum: {{ blog.date | date('d M Y - H:i') }}</span>
+                        </div>
+
                     </div>
+
+                    <hr>
+
+                    <div class="mb-4">
+                        <h6 class="text-dark fw-semibold mb-2">content</h6>
+                        <p class="text-muted fs-6">{{ blog.content }}</p>
+                    </div>
+                    <hr>
+
+
+                    {% if activities is empty %}
+                        <div class="alert alert-info shadow-sm border-0">
+                            Er zijn nog geen activiteiten.
+                        </div>
+                    {% endif %}
+
+                    <div class="d-flex justify-content-end gap-3 mt-4">
+
+
+                        <form action="/blogs/{{ blog.id }}/edit" method="POST" class="d-inline">
+                            <button type="submit" class="btn btn-success px-4 shadow-sm">
+                                <i class="bi bi-pencil"></i> Bewerken
+                            </button>
+                        </form>
+
+                        <form action="/blogs/{{ blog.id }}/deleteConfirm" method="POST">
+                            <button type="submit" class="btn btn-danger px-4 shadow-sm">
+                                <i class="bi bi-trash"></i> Verwijderen
+                            </button>
+                        </form>
+
+                    </div>
+
                 </div>
             </div>
-    </div>
-{% endblock %}
+
+        </div>
+
+    {% endblock %}
+
+    {#    <h1 class="container d-flex justify-content-center align-items-center mt-3 mb-5"> Blog Manager</h1>#}
+{#    <div>#}
+{#            <div class="container d-flex justify-content-center align-items-center" style="min-height: 35vh;">#}
+{#                <div class="card shadow-lg p-4" style="width: 600px; border-radius: 12px;">#}
+{#                    <h2 class="text-center mb-4 text-primary">{{ blog.title|capitalize }}</h2>#}
+{#                    <p>{{ blog.content }}</p>#}
+{#                    <p>{{ blog.date | date(dd-yy-mm) }}</p>#}
+
+{#                    <div class="d-flex gap-2">#}
+{#                        <a type="button" class="btn btn-primary" href="/blog/{{ blog.id}}/edit">Edit</a>#}
+{#                        <button class="btn btn-secondary">Remove</button>#}
+{#                    </div>#}
+{#                </div>#}
+{#            </div>#}
+{#    </div>#}
