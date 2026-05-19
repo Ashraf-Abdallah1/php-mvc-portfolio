@@ -2,6 +2,7 @@
 
 namespace App\Controllers;
 
+use App\Models\Blog;
 use App\Repositories\BlogRepositoryInterface;
 use Framework\Request;
 use Framework\Response;
@@ -36,8 +37,85 @@ class BlogController
         ]);
     }
 
-    public function create(Request $request): Response{
+    public function create(Request $request): Response
+    {
+        $blogs = $this->blogRepository->all();
         return $this->responseFactory->view('blog/create.html.twig');
     }
 
+    public function store(Request $request): Response
+    {
+        $blog = new Blog();
+        $blog->setTitle($request->get('title'));
+        $blog->setContent($request->get('content'));
+        $blog->setDate(time());
+
+        $errors = $this->validateBlog($blog);
+        if (!empty($errors)) {
+            return $this->responseFactory->view('blog/create.html.twig', [
+                'errors' => $errors,
+                'oldBlog' => $blog
+            ]);
+        }
+
+        $this->blogRepository->insert($blog);
+        return $this->responseFactory->redirect('/blogs');
+    }
+
+
+    public function edit(Request $request): Response
+    {
+        $id = (int)$request->get('id');
+        $blog = $this->blogRepository->findById($id);
+        return $this->responseFactory->view('blog/edit.html.twig', [
+            'blog' => $blog
+        ]);
+    }
+
+
+    public function update(Request $request): Response
+    {
+        $blog = new Blog();
+        $blog->setId($request->get('id'));
+        $blog->setTitle($request->get('title'));
+        $blog->setContent($request->get('content'));
+        $blog->setDate(time());
+        $errors = $this->validateBlog($blog);
+        if (!empty($errors)) {
+            return $this->responseFactory->view('blog/edit.html.twig', [
+                'errors' => $errors,
+                'oldBlog' => $blog
+            ]);
+        }
+        $this->blogRepository->update($blog);
+        return $this->responseFactory->redirect('/blogs/' . $blog->getId());
+    }
+
+    public function deleteConfirm(Request $request): Response{
+        $id = $request->get('id');
+        $blog = $this->blogRepository->findById($id);
+        return $this->responseFactory->view("blog/deleteConfirm.html.twig", [
+            "blog" => $blog,
+        ]);
+    }
+
+    public function delete(Request $request): Response{
+        $id = (int)$request->get('id');
+        $this->blogRepository->delete($id);
+        return $this->responseFactory->redirect('/blogs');
+    }
+
+    private function validateBlog(Blog $blog): array
+    {
+        $errors = [];
+        $blogs = $this->blogRepository->all();
+        foreach ($blogs as $dbBlog) {
+            if ($blog->getTitle() == $dbBlog->getTitle()) {
+                $errors['title'] = "Deze title is al in gebruik. Kies een uniqe title.";
+            }
+        }
+
+        return $errors;
+
+    }
 }

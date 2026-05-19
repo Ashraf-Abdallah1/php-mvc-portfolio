@@ -2,16 +2,74 @@
 
 {% block content %}
     <div>
-        {% for blog in blogs %}
-            <div class="container d-flex justify-content-center align-items-center" style="min-height: 35vh;">
-                <div class="card shadow-lg p-4" style="width: 600px; border-radius: 12px;">
-                    <h2 class="text-center mb-4 text-primary">{{ blog.title|capitalize }}</h2>
-                    <p>{{ blog.content }}</p>
-                    <p>{{ blog.date | date(dd-yy-mm) }}</p>
+        <div class="d-flex justify-content-center m-4">
+            <a href="/blogs/create"
+               class="btn btn-success px-4 shadow-sm d-flex align-items-center gap-2">
+                <i class="bi bi-plus-lg"></i>
+                Nieuw Blog
+            </a>
+        </div>
 
-                    <a type="button" class="btn btn-info container d-flex justify-content-center align-items-center " href="/blog/{{ blog.id }}" style="width: 100px">Show</a>
+        {% if blogs is empty %}
+        <div class="alert alert-info shadow-sm border-0">
+            Er zijn nog geen blogs toegevoegd.
+        </div>
+        {% else %}
+        {% for blog in blogs %}
+            <div class="container mt-5" style="max-width: 900px;">
+
+                <div class="card shadow-lg border-0 rounded-4">
+                    <div class="card-body p-4">
+
+                        <div class="d-flex align-items-center mb-4">
+                            <div class="rounded-circle bg-success bg-opacity-10 d-flex justify-content-center align-items-center"
+                                 style="width: 70px; height: 70px;">
+                                <i class="bi bi-building text-success" style="font-size: 2rem;"></i>
+                            </div>
+
+                            <div class="ms-3">
+                                <h4 class="fw-bold mb-0">{{ blog.title }}</h4>
+                                <span class="text-muted">Datum: {{ blog.date | date('d M Y - H:i') }}</span>
+                            </div>
+                        </div>
+
+                        <hr>
+
+                        <div class="mb-4">
+                            <h6 class="text-dark fw-semibold mb-2">Content</h6>
+                            <p class="text-muted fs-6">{{ blog.content }}</p>
+                        </div>
+
+                        <hr>
+
+                        <div class="d-flex justify-content-end gap-3 mt-4">
+
+
+                            <form action="/blogs/{{ blog.id }}" method="GET" class="d-inline">
+                                <button type="submit" class="btn btn-success px-4 shadow-sm">
+                                    <i class="bi bi-pencil"></i> view
+                                </button>
+                            </form>
+                        </div>
+
+                    </div>
                 </div>
+
             </div>
+
         {% endfor %}
     </div>
+    {% endif %}
 {% endblock %}
+
+
+
+{# <div class="container d-flex justify-content-center align-items-center" style="min-height: 35vh;"> #}
+{#    <div class="card shadow-lg p-4" style="width: 600px; border-radius: 12px;"> #}
+{#        <h2 class="text-center mb-4 text-primary">{{ blog.title|capitalize }}</h2> #}
+{#        <p>{{ blog.content }}</p> #}
+{#        <p>{{ blog.date | date(dd-yy-mm) }}</p> #}
+
+{#
+{#    </div> #}
+{# </div> #}

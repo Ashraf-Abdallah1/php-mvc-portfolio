@@ -1,0 +1,38 @@
+{% extends "blog/base.html.twig" %}
+
+{% block body %}
+
+    <div class="container mt-5" style="max-width: 600px;">
+
+        <h2 class="fw-bold text-danger mb-3">Verwijderen Bevestigen</h2>
+        <p class="text-muted mb-4">
+            Weet je zeker dat je het volgende Blog wilt verwijderen?
+           Deze actie kan niet ongedaan worden
+        </p>
+
+        <div class="card shadow-sm border-0">
+            <div class="card-body">
+
+                <h5 class="fw-bold mb-1">{{ blog.title }}</h5>
+                <p class="text-muted mb-3">{{ blog.content }}</p>
+
+                <div class="d-flex justify-content-between mt-4">
+
+                    <a href="/blogs/{{ blog.id }}" class="btn btn-outline-success px-4">
+                        Annuleren
+                    </a>
+
+                    <form method="POST" action="/blogs/{{ blog.id }}/delete">
+                        <button type="submit" class="btn btn-danger px-4">
+                            Verwijderen
+                        </button>
+                    </form>
+
+                </div>
+
+            </div>
+        </div>
+
+    </div>
+
+{% endblock %}

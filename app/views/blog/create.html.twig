@@ -1,0 +1,43 @@
+{% extends "blog/base.html.twig" %}
+{% block body %}
+    <div class="container mt-5" style="max-width: 700px;">
+        <div class="card shadow-sm border-0">
+            <div class="card-header bg-white border-0">
+                <h3 class="fw-bold text-success mb-0">Nieuw blog Aanmaken</h3>
+                <p class="text-muted mt-1">Vul de velden hieronder in</p>
+            </div>
+
+            <div class="card-body">
+
+                <form method="POST" action="/blogs">
+
+                    <div class="mb-4">
+                        <label class="form-label fw-semibold">Title</label>
+                        <input type="text"
+                               name="title"s
+                               class="form-control border-success"
+                               placeholder="Bijv. Football"
+                               required>
+                        {% if errors.title %}
+                            <div class="text-danger small mt-1">"{{ oldBlog.title }}"  {{ errors.title }}</div>
+                        {% endif %}
+                    </div>
+
+                    <div class="mb-4">
+                        <label class="form-label fw-semibold">Content</label>
+                        <textarea name="content" class="form-control border-success" rows="4"
+                                  placeholder="Beschrijving van het blog"
+                                  required>{{ oldBlog.content ?? '' }}</textarea>
+                    </div>
+
+                    <div class="d-flex justify-content-between mt-4">
+                        <a href="/blog" class="btn btn-outline-danger px-4">Annuleren</a>
+                        <button type="submit" class="btn btn-success px-4">Aanmaken</button>
+                    </div>
+
+                </form>
+
+            </div>
+        </div>
+    </div>
+{% endblock %}
