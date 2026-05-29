@@ -46,8 +46,8 @@ class BlogController
     public function store(Request $request): Response
     {
         $blog = new Blog();
-        $blog->setTitle($request->get('title'));
-        $blog->setContent($request->get('content'));
+        $blog->setTitle((string)$request->get('title'));
+        $blog->setContent((string)$request->get('content'));
         $blog->setDate(time());
 
         $errors = $this->validateBlog($blog);
@@ -76,9 +76,9 @@ class BlogController
     public function update(Request $request): Response
     {
         $blog = new Blog();
-        $blog->setId($request->get('id'));
-        $blog->setTitle($request->get('title'));
-        $blog->setContent($request->get('content'));
+        $blog->setId((int)$request->get('id'));
+        $blog->setTitle((string)$request->get('title'));
+        $blog->setContent((string)$request->get('content'));
         $blog->setDate(time());
         $errors = $this->validateBlog($blog);
         if (!empty($errors)) {
@@ -91,20 +91,26 @@ class BlogController
         return $this->responseFactory->redirect('/blogs/' . $blog->getId());
     }
 
-    public function deleteConfirm(Request $request): Response{
+    public function deleteConfirm(Request $request): Response
+    {
         $id = $request->get('id');
-        $blog = $this->blogRepository->findById($id);
+        $blog = $this->blogRepository->findById((int)$id);
         return $this->responseFactory->view("blog/deleteConfirm.html.twig", [
             "blog" => $blog,
         ]);
     }
 
-    public function delete(Request $request): Response{
+    public function delete(Request $request): Response
+    {
         $id = (int)$request->get('id');
         $this->blogRepository->delete($id);
         return $this->responseFactory->redirect('/blogs');
     }
 
+    /**
+     * @param Blog $blog
+     * @return array<string, string>
+     */
     private function validateBlog(Blog $blog): array
     {
         $errors = [];
@@ -116,6 +122,5 @@ class BlogController
         }
 
         return $errors;
-
     }
 }

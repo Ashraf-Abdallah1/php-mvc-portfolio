@@ -51,6 +51,4 @@ class Blog
     {
         $this->date = $date;
     }
-
-
 }

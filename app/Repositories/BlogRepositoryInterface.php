@@ -18,5 +18,4 @@ interface BlogRepositoryInterface
     public function update(Blog $blog): Blog;
 
     public function delete(int $id): bool;
-
 }
