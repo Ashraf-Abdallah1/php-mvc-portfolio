@@ -40,6 +40,5 @@ class RouteProvider implements RouteProviderInterface
         $router->addRoute('POST', '/blogs/(?<id>\d+)', [$blogController, "update"]);
         $router->addRoute('POST', '/blogs/(?<id>\d+)/deleteConfirm', [$blogController, "deleteConfirm"]);
         $router->addRoute('POST', '/blogs/(?<id>\d+)/delete', [$blogController, "delete"]);
-
     }
 }
