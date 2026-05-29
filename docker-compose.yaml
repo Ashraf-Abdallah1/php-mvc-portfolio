@@ -1,3 +1,8 @@
+networks:
+  mysql-pma-network:
+    driver: bridge
+
+
 services:
   #depends on zorgt dat de webservice wacht tot dat een connectie is met de db
   web:
@@ -10,11 +15,11 @@ services:
       DB_PASSWORD: root
       DB_NAME: test_db
 
-#./ de hele project map naar de /var/www
+    #./ de hele project map naar de /var/www
     volumes:
       - ./:/var/www
 
- # om de apache naar de public te laten kijken
+    # om de apache naar de public te laten kijken
     command: >
       bash -c "sed -i 's#/var/www/html#/var/www/public#' /etc/apache2/sites-available/000-default.conf
       && apache2-foreground"
@@ -29,9 +34,28 @@ services:
     environment:
       MYSQL_ROOT_PASSWORD: root
       MYSQL_DATABASE: test_db
+      MYSQL_USER: db_user
+      MYSQL-PASSWORD: db_password
+
+    networks:
+      - mysql-pma-network
 
     volumes:
       - dbdata:/var/lib/mysql
+
+
+  pma:
+    depends_on:
+      - db
+#    build: ./
+    image: phpmyadmin:latest
+    ports:
+      - 8081:8081
+    environment:
+      PMA_HOST: db
+    networks:
+      - mysql-pma-network
+
 
 
 volumes:
