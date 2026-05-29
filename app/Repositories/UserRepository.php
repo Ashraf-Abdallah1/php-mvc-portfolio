@@ -44,7 +44,8 @@ class UserRepository implements UserRepositoryInterface
     public function insert(User $user): User
     {
         $stmt = $this->database->run(
-            "INSERT INTO Users (name, username, password) VALUES (:name, :username, :password)",
+            "INSERT INTO Users (name, username, password)
+                    VALUES (:name, :username, :password)",
             [
                 "name" => $user->getName(),
                 "username" => $user->getUsername(),
