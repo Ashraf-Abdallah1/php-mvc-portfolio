@@ -37,7 +37,8 @@ class BlogRepository implements BlogRepositoryInterface
 
     public function insert(Blog $blog): Blog
     {
-        $stmt = $this->database->run("INSERT INTO Blogs (title, content, created_date) VALUES (:title, :content, :created_date)", [
+        $stmt = $this->database->run("INSERT INTO Blogs (title, content, created_date) 
+            VALUES (:title, :content, :created_date)", [
             "title" => $blog->getTitle(),
             "content" => $blog->getContent(),
             "created_date" => $blog->getDate()
@@ -48,7 +49,11 @@ class BlogRepository implements BlogRepositoryInterface
 
     public function update(Blog $blog): Blog
     {
-        $stmt = $this->database->run("update Blogs set title =:title, content=:content, created_date=:created_date  where id = :id", [
+        $stmt = $this->database->run("update Blogs set
+                 title =:title,
+                 content=:content,
+                 created_date=:created_date
+                where id = :id", [
             "title" => $blog->getTitle(),
             "id" => $blog->getId(),
             "content" => $blog->getContent(),
