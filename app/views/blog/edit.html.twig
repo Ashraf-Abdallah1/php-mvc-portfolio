@@ -26,11 +26,11 @@
                                 type="text"
                                 name="title"
                                 class="form-control border-success shadow-sm"
-                                value="{{ blog.title}}"
+                                value="{{ blog.title|e}}"
                                 required
                         >
-                        {% if errors.title %}
-                            <div class="text-danger small mt-1">"{{ oldBlog.title }}" {{ errors.title }}</div>
+                        {% if errors.title|e %}
+                            <div class="text-danger small mt-1">"{{ oldBlog.title|e }}" {{ errors.title|e }}</div>
                         {% endif %}
                     </div>
 

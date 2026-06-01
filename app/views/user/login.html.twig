@@ -13,8 +13,8 @@
                    placeholder="unique"
                    value="{{ old.username ?? '' }}"
                    required>
-            {% if errors.username %}
-                <div class="text-danger small mt-1">{{ errors.username }}</div>
+            {% if errors.username|e %}
+                <div class="text-danger small mt-1">{{ errors.username|e }}</div>
             {% endif %}
         </div>
 
@@ -27,7 +27,7 @@
                    placeholder="password"
                    required>
             {% if errors.password %}
-                <div class="text-danger small mt-1">{{ errors.password }}</div>
+                <div class="text-danger small mt-1">{{ errors.password|e }}</div>
             {% endif %}
         </div>
 
