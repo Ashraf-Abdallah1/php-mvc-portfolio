@@ -2,6 +2,8 @@
 
 {% block content %}
     <div>
+
+    {% if isAdmin %}
         <div class="d-flex justify-content-center m-4">
             <a href="/blogs/create"
                class="btn btn-success px-4 shadow-sm d-flex align-items-center gap-2">
@@ -9,6 +11,7 @@
                 Nieuw Blog
             </a>
         </div>
+    {% endif %}
 
         {% if blogs is empty %}
         <div class="alert alert-info shadow-sm border-0">
@@ -24,7 +27,7 @@
                         <div class="d-flex align-items-center mb-4">
                             <div class="rounded-circle bg-success bg-opacity-10 d-flex justify-content-center align-items-center"
                                  style="width: 70px; height: 70px;">
-                                <i class="bi bi-building text-success" style="font-size: 2rem;"></i>
+                                <i class="bi bi-journal-text text-success" style="font-size: 2rem;"></i>
                             </div>
 
                             <div class="ms-3">

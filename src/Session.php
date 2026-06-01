@@ -114,4 +114,9 @@ class Session
         unset($_SESSION['flash']);
         return $flash;
     }
+
+    public function regenerate(): void
+    {
+        session_regenerate_id(true);
+    }
 }

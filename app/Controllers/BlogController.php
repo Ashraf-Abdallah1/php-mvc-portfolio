@@ -4,6 +4,7 @@ namespace App\Controllers;
 
 use App\Models\Blog;
 use App\Repositories\BlogRepositoryInterface;
+use App\Services\AuthService;
 use Framework\Request;
 use Framework\Response;
 use Framework\ResponseFactory;
@@ -13,27 +14,41 @@ class BlogController
     private ResponseFactory $responseFactory;
     private BlogRepositoryInterface $blogRepository;
 
-    public function __construct(ResponseFactory $responseFactory, BlogRepositoryInterface $blogRepository)
+    private AuthService $authService;
+
+    private bool $isAdmin = false;
+
+    public function __construct(
+        ResponseFactory         $responseFactory,
+        BlogRepositoryInterface $blogRepository,
+        AuthService             $authService,
+    )
     {
         $this->responseFactory = $responseFactory;
         $this->blogRepository = $blogRepository;
+        $this->authService = $authService;
     }
 
     public function index(): Response
     {
+        $this->isAdmin = $this->authService->isAdmin();
+
         $blogs = $this->blogRepository->all();
 
         return $this->responseFactory->view('blog/index.html.twig', [
-            'blogs' => $blogs
+            'blogs' => $blogs,
+            'isAdmin' => $this->isAdmin,
         ]);
     }
 
     public function show(Request $request): Response
     {
+        $this->isAdmin = $this->authService->isAdmin();
         $id = (int)$request->get('id');
         $blog = $this->blogRepository->findById($id);
         return $this->responseFactory->view('blog/show.html.twig', [
-            'blog' => $blog
+            'blog' => $blog,
+            'isAdmin' => $this->isAdmin,
         ]);
     }
 
@@ -45,6 +60,7 @@ class BlogController
 
     public function store(Request $request): Response
     {
+        $this->isAdmin = $this->authService->isAdmin();
         $blog = new Blog();
         $blog->setTitle((string)$request->get('title'));
         $blog->setContent((string)$request->get('content'));
@@ -54,7 +70,8 @@ class BlogController
         if (!empty($errors)) {
             return $this->responseFactory->view('blog/create.html.twig', [
                 'errors' => $errors,
-                'oldBlog' => $blog
+                'oldBlog' => $blog,
+                'isAdmin' => $this->isAdmin,
             ]);
         }
 
@@ -65,16 +82,19 @@ class BlogController
 
     public function edit(Request $request): Response
     {
+        $this->isAdmin = $this->authService->isAdmin();
         $id = (int)$request->get('id');
         $blog = $this->blogRepository->findById($id);
         return $this->responseFactory->view('blog/edit.html.twig', [
-            'blog' => $blog
+            'blog' => $blog,
+            'isAdmin' => $this->isAdmin,
         ]);
     }
 
 
     public function update(Request $request): Response
     {
+        $this->isAdmin = $this->authService->isAdmin();
         $blog = new Blog();
         $blog->setId((int)$request->get('id'));
         $blog->setTitle((string)$request->get('title'));
@@ -84,7 +104,8 @@ class BlogController
         if (!empty($errors)) {
             return $this->responseFactory->view('blog/edit.html.twig', [
                 'errors' => $errors,
-                'oldBlog' => $blog
+                'oldBlog' => $blog,
+                'isAdmin' => $this->isAdmin,
             ]);
         }
         $this->blogRepository->update($blog);
@@ -93,15 +114,18 @@ class BlogController
 
     public function deleteConfirm(Request $request): Response
     {
+        $this->isAdmin = $this->authService->isAdmin();
         $id = $request->get('id');
         $blog = $this->blogRepository->findById((int)$id);
         return $this->responseFactory->view("blog/deleteConfirm.html.twig", [
             "blog" => $blog,
+            "isAdmin" => $this->isAdmin,
         ]);
     }
 
     public function delete(Request $request): Response
     {
+        $this->isAdmin = $this->authService->isAdmin();
         $id = (int)$request->get('id');
         $this->blogRepository->delete($id);
         return $this->responseFactory->redirect('/blogs');
