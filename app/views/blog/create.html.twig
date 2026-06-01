@@ -14,12 +14,12 @@
                     <div class="mb-4">
                         <label class="form-label fw-semibold">Title</label>
                         <input type="text"
-                               name="title"s
+                               name="title"
                                class="form-control border-success"
                                placeholder="Bijv. Football"
                                required>
                         {% if errors.title %}
-                            <div class="text-danger small mt-1">"{{ oldBlog.title }}"  {{ errors.title }}</div>
+                            <div class="text-danger small mt-1">"{{ oldBlog.title|e }}"  {{ errors.title|e }}</div>
                         {% endif %}
                     </div>
 

@@ -69,8 +69,12 @@ class BlogRepository implements BlogRepositoryInterface
         return $stmt->rowCount() > 0;
     }
 
-    public function fromDbRow(mixed $row): Blog
+    public function fromDbRow(mixed $row): ?Blog
     {
+        if ($row === null) {
+            return null;
+        }
+
         $blog = new Blog();
         $blog->setTitle($row->title);
         $blog->setContent($row->content);
