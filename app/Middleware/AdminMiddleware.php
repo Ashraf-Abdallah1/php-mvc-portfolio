@@ -4,6 +4,7 @@ namespace App\Middleware;
 
 use App\Services\AuthService;
 use Framework\Request;
+use Framework\Response;
 use Framework\ResponseFactory;
 
 class AdminMiddleware
@@ -18,7 +19,7 @@ class AdminMiddleware
         $this->responseFactory = $responseFactory;
     }
 
-    public function handle(Request $request, callable $next)
+    public function handle(Request $request, callable $next): Response
     {
         $adminRoutes = [
             '#^/blogs/\d+/edit$#',
@@ -42,14 +43,12 @@ class AdminMiddleware
         }
 
         if (!$this->authService->isAdmin()) {
-
             return $this->responseFactory->view('errors/403.html.twig', [
                 'message' => 'Je hebt geen toegang tot deze pagina',
                 'user' => $this->authService->getUserId()
-            ], 403);
+            ]);
         }
 
         return $next($request);
     }
-
 }

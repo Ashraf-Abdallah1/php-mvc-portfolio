@@ -2,7 +2,6 @@
 
 namespace App;
 
-use _PHPStan_2526f5004\GuzzleHttp\Middleware;
 use App\Controllers\BlogController;
 use App\Controllers\HomeController;
 use App\Controllers\UserController;

@@ -4,6 +4,7 @@ namespace App\Middleware;
 
 use App\Services\AuthService;
 use Framework\Request;
+use Framework\Response;
 use Framework\ResponseFactory;
 
 class AuthMiddleware
@@ -17,7 +18,7 @@ class AuthMiddleware
         $this->responseFactory = $responseFactory;
     }
 
-    public function handle(Request $request, callable $next)
+    public function handle(Request $request, callable $next): Response
     {
         $publicRoutes = [
             '/login',
@@ -35,5 +36,4 @@ class AuthMiddleware
 
         return $next($request);
     }
-
 }
