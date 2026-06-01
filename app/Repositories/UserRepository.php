@@ -67,8 +67,11 @@ class UserRepository implements UserRepositoryInterface
         return new User();
     }
 
-    public function fromDbRow(mixed $row): User
+    public function fromDbRow(mixed $row): ?User
     {
+        if ($row === null) {
+            return null;
+        }
         $user = new User();
         $user->setName($row->name);
         $user->setUsername($row->username);
