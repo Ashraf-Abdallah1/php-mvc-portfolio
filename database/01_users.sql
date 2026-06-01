@@ -2,5 +2,6 @@ CREATE  TABLE Users(
                        id integer primary key Autoincrement,
                        name text,
                        username text,
-                       password text
+                       password text,
+                       role TEXT NOT NULL DEFAULT 'user'
 )

@@ -47,15 +47,19 @@ class UserRepository implements UserRepositoryInterface
     public function insert(User $user): User
     {
         $stmt = $this->database->run(
-            "INSERT INTO Users (name, username, password)
-                    VALUES (:name, :username, :password)",
+            "INSERT INTO Users (name, username, password, role)
+                    VALUES (:name, :username, :password, :role)",
             [
                 "name" => $user->getName(),
                 "username" => $user->getUsername(),
                 "password" => $user->getPassword(),
+                "role" => $user->getRole(),
             ]
         );
-        return new User();
+
+        $id = $this->database->getLastID();
+        $user->setId($id);
+        return $user;
     }
 
     public function update(User $user): User
@@ -70,6 +74,7 @@ class UserRepository implements UserRepositoryInterface
         $user->setUsername($row->username);
         $user->setPassword($row->password);
         $user->setId($row->id);
+        $user->setRole($row->role ?? 'user');
         return $user;
     }
 }

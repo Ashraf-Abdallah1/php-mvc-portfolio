@@ -11,6 +11,8 @@ class User
 
     private string $password;
 
+    private string $role = "user";
+
     public function getPassword(): string
     {
         return $this->password;
@@ -43,5 +45,15 @@ class User
     public function setId(int $id): void
     {
         $this->id = $id;
+    }
+
+    public function getRole(): string
+    {
+        return $this->role;
+    }
+
+    public function setRole(string $role): void
+    {
+        $this->role = $role;
     }
 }

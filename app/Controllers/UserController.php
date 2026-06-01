@@ -79,6 +79,12 @@ class UserController
         ]);
     }
 
+    public function logout(Request $request): Response
+    {
+        $this->authService->logout();
+        return $this->response->redirect('/login');
+    }
+
     /**
      * @param string $username
      * @param string $password
