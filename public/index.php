@@ -5,17 +5,24 @@ require __DIR__ . '/../vendor/autoload.php';
 
 use App\RouteProvider;
 use App\ServiceProvider;
+use Framework\EnvLoader;
 use Framework\Kernel;
 use Framework\Request;
 
-$config = array(
-    'APP_ENV' => 'development',
-    'VIEWS_PATH' => 'app/views',
-    'APP_DB' => 'database.sqlite'
-);
+$config = [];
+
+try {
+    $config = EnvLoader::load(__DIR__ . '/../.env.local');
+} catch (Exception $e) {
+    die("ENV ERROR: " . $e->getMessage());
+}
 
 // Initialize the Kernel with configuration
-$kernel = new Kernel($config);
+try {
+    $kernel = new Kernel($config);
+} catch (Exception $e) {
+    echo $e->getMessage();
+}
 
 $kernel->registerServices(new ServiceProvider());
 

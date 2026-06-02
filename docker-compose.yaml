@@ -18,11 +18,16 @@ services:
     #./ de hele project map naar de /var/www
     volumes:
       - ./:/var/www
+    networks:
+      - mysql-pma-network
 
-    # om de apache naar de public te laten kijken
+    # om de apache naar de public te laten kijken && de regel 25 voor .htacces
     command: >
-      bash -c "sed -i 's#/var/www/html#/var/www/public#' /etc/apache2/sites-available/000-default.conf
-      && apache2-foreground"
+      bash -c " docker-php-ext-install pdo pdo_mysql &&
+      sed -i 's#/var/www/html#/var/www/public#' /etc/apache2/sites-available/000-default.conf &&
+      sed -i 's/AllowOverride None/AllowOverride All/g' /etc/apache2/apache2.conf &&
+      a2enmod rewrite &&
+      apache2-foreground"
     depends_on:
       - db
 
@@ -35,7 +40,7 @@ services:
       MYSQL_ROOT_PASSWORD: root
       MYSQL_DATABASE: test_db
       MYSQL_USER: db_user
-      MYSQL-PASSWORD: db_password
+      MYSQL_PASSWORD: db_password
 
     networks:
       - mysql-pma-network
@@ -47,10 +52,10 @@ services:
   pma:
     depends_on:
       - db
-#    build: ./
+    #    build: ./
     image: phpmyadmin:latest
     ports:
-      - 8081:8081
+      - "8081:80"
     environment:
       PMA_HOST: db
     networks:

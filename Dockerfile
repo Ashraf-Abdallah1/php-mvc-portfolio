@@ -1,3 +1,4 @@
-FROM php:apache
-
-RUN docker-php-ext-install pdo pdo_mysql
+#FROM php:apache
+#
+#RUN docker-php-ext-install pdo pdo_mysql
+#FROM phpmyadmin:latest
