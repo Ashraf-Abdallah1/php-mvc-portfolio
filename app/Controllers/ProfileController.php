@@ -50,12 +50,12 @@ class ProfileController
     public function update(Request $request): Response
     {
         $profile = new Profile();
-        $profile->setName($request->get('name'));
-        $profile->setBio($request->get('bio'));
-        $profile->setSkills($request->get('skills'));
-        $profile->setExperience($request->get('experience'));
-        $profile->setProjects($request->get('projects'));
-        $profile->setContact($request->get('contact'));
+        $profile->setName((string)$request->get('name'));
+        $profile->setBio((string)$request->get('bio'));
+        $profile->setSkills((string)$request->get('skills'));
+        $profile->setExperience((string)$request->get('experience'));
+        $profile->setProjects((string)$request->get('projects'));
+        $profile->setContact((string)$request->get('contact'));
 
         $this->profileRepository->update($profile);
 

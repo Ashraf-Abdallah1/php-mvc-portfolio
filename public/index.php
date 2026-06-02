@@ -24,13 +24,14 @@ try {
     echo $e->getMessage();
 }
 
-$kernel->registerServices(new ServiceProvider());
-
-date_default_timezone_set('Europe/Amsterdam');
+if (isset($kernel)) {
+    $kernel->registerServices(new ServiceProvider());
 
 // Define routes
-$kernel->registerRoutes(new RouteProvider());
+    $kernel->registerRoutes(new RouteProvider());
+}
 
+date_default_timezone_set('Europe/Amsterdam');
 // Get Request data from the global variables
 $method = $_SERVER['REQUEST_METHOD'] ?? 'GET';
 
@@ -49,8 +50,11 @@ $postData = $_POST;
 // Create the Request object
 $request = new Request($method, $urlPath, $queryParams, $postData);
 
+if (isset($kernel)) {
+    $response = $kernel->handle($request);
+    $response->echo();
+}
 // Handle the request and get the response
-$response = $kernel->handle($request);
+
 
 // Send the response to the client
-$response->echo();

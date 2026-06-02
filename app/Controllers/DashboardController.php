@@ -69,7 +69,7 @@ class DashboardController
             return $this->response->redirect('errors/403');
         }
 
-        $course = $request->get('course');
+        $course = (string)$request->get('course');
         $grade = (float)$request->get('grade');
 
         $this->dashboardRepository->updateGrade($course, $grade);
@@ -83,7 +83,7 @@ class DashboardController
             return $this->response->redirect('errors/403');
         }
 
-        $course = $request->get('course');
+        $course = (string)$request->get('course');
         $grade = (float)$request->get('grade');
 
         $this->dashboardRepository->addCourse($course, $grade);
@@ -93,7 +93,7 @@ class DashboardController
 
     public function deleteCourse(Request $request): Response
     {
-        $course = $request->get('course');
+        $course = (string)$request->get('course');
 
         $this->dashboardRepository->deleteCourse($course);
 

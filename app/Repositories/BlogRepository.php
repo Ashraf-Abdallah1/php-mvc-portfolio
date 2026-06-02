@@ -5,6 +5,7 @@ namespace App\Repositories;
 use App\Models\Blog;
 use App\Repositories\BlogRepositoryInterface;
 use Framework\Database;
+use RuntimeException;
 
 class BlogRepository implements BlogRepositoryInterface
 {
@@ -20,8 +21,9 @@ class BlogRepository implements BlogRepositoryInterface
      */
     public function all(): array
     {
-        $stmt = $this->database->run("SELECT * FROM Blogs")->fetchAll();
         $blogs = [];
+        $stmt = $this->database->run("SELECT * FROM Blogs")->fetchAll();
+
         foreach ($stmt as $blog) {
             $rowBlog = $this->fromDbRow($blog);
             $blogs[] = $rowBlog;
@@ -69,10 +71,10 @@ class BlogRepository implements BlogRepositoryInterface
         return $stmt->rowCount() > 0;
     }
 
-    public function fromDbRow(mixed $row): ?Blog
+    public function fromDbRow(mixed $row): Blog
     {
         if ($row === null) {
-            return null;
+            throw new RuntimeException("Invalid DB row for Blog");
         }
 
         $blog = new Blog();

@@ -33,14 +33,22 @@ class Dashboard
         $this->totalCredits = $c;
     }
 
+    /**
+     * @return array<string, int>
+     */
     public function getGrades(): array
     {
         return $this->grades;
     }
 
-    public function setGrades(array $g): void
+
+    /**
+     * @param array<string, int> $grades
+     * @return void
+     */
+    public function setGrades(array $grades): void
     {
-        $this->grades = $g;
+        $this->grades = $grades;
     }
 
     public function getProgressPercentage(): float

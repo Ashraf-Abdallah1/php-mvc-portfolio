@@ -4,6 +4,7 @@ namespace App\Repositories;
 
 use App\Models\User;
 use Framework\Database;
+use RuntimeException;
 
 class UserRepository implements UserRepositoryInterface
 {
@@ -16,8 +17,8 @@ class UserRepository implements UserRepositoryInterface
 
     public function all(): array
     {
-        $stmt = $this->database->run("SELECT * FROM Users")->fetchAll();
         $users = [];
+        $stmt = $this->database->run("SELECT * FROM Users")->fetchAll();
         foreach ($stmt as $user) {
             $rowUser = $this->fromDbRow($user);
             $users[] = $rowUser;
@@ -67,11 +68,12 @@ class UserRepository implements UserRepositoryInterface
         return new User();
     }
 
-    public function fromDbRow(mixed $row): ?User
+    public function fromDbRow(mixed $row): User
     {
         if ($row === null) {
-            return null;
+            throw new RuntimeException("Invalid DB row for Blog");
         }
+
         $user = new User();
         $user->setName($row->name);
         $user->setUsername($row->username);

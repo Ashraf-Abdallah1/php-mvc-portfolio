@@ -7,6 +7,8 @@ use Exception;
 class EnvLoader
 {
     /**
+     * @param string $file
+     * @return array<string, string>
      * @throws Exception
      */
     public static function load(string $file): array
@@ -15,7 +17,7 @@ class EnvLoader
             throw new Exception(".env file not found: $file");
         }
 
-        $lines = file($file, FILE_IGNORE_NEW_LINES | FILE_SKIP_EMPTY_LINES);
+        $lines = file($file, FILE_IGNORE_NEW_LINES | FILE_SKIP_EMPTY_LINES) ?: [];
 
         $config = [];
 

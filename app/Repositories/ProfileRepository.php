@@ -52,7 +52,7 @@ class ProfileRepository implements ProfileRepositoryInterface
         return $this->fromDbRow($stmt);
     }
 
-    private function fromDbRow($row): ?Profile
+    private function fromDbRow(mixed $row): ?Profile
     {
         if (!$row) {
             return null;
