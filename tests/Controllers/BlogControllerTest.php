@@ -19,7 +19,7 @@ class BlogControllerTest extends TestCase
     private BlogRepositoryInterface&MockObject $blogRepository;
     private ResponseFactory&MockObject $responseFactory;
 
-    private AuthService $authService;
+    private AuthService&MockObject $authService;
 
     private BlogController $controller;
 
