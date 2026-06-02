@@ -22,8 +22,8 @@ class RouteProvider implements RouteProviderInterface
         $authMiddleware = $container->get(AuthMiddleware::class);
         $adminMiddleware = $container->get(AdminMiddleware::class);
 
-        $router->addMiddleware([$authMiddleware, 'handle']);
-        $router->addMiddleware([$adminMiddleware, 'handle']);
+//        $router->addMiddleware([$authMiddleware, 'handle']);
+//        $router->addMiddleware([$adminMiddleware, 'handle']);
 
 
         $homeController = $container->get(HomeController::class);

@@ -2,17 +2,17 @@
 
 namespace Framework;
 
+use Exception;
+
 class Kernel
 {
     private Router $router;
-
     private ServiceContainer $container;
-
     private ConfigManager $configManager;
 
     /**
      * @param string[] $config
-     * @throws \Exception
+     * @throws Exception
      */
     public function __construct(array $config)
     {
@@ -20,13 +20,19 @@ class Kernel
 
         $this->configManager = new ConfigManager($config);
 
-        $debugMode = $this->configManager->get('APP_ENV') != 'production';
+        $debugMode = $this->configManager->get('APP_ENV') !== 'production';
         $viewsPath = $this->configManager->get('VIEWS_PATH');
+
         $responseFactory = new ResponseFactory($debugMode, $viewsPath);
         $this->container->set(ResponseFactory::class, $responseFactory);
 
-        $dbName = $this->configManager->get('APP_DB');
-        $database = new Database(__DIR__ . '/../' . $dbName);
+        $database = new Database(
+            $this->configManager->get('DB_HOST'),
+            $this->configManager->get('DB_NAME'),
+            $this->configManager->get('DB_USER'),
+            $this->configManager->get('DB_PASSWORD')
+        );
+
         $this->container->set(Database::class, $database);
 
         $this->router = new Router($responseFactory);
