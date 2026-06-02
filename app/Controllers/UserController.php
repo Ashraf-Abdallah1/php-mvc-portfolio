@@ -18,10 +18,11 @@ class UserController
     private AuthService $authService;
 
     public function __construct(
-        ResponseFactory $response,
+        ResponseFactory         $response,
         UserRepositoryInterface $userRepository,
-        AuthService $authService,
-    ) {
+        AuthService             $authService,
+    )
+    {
         $this->response = $response;
         $this->userRepository = $userRepository;
         $this->authService = $authService;
@@ -102,8 +103,30 @@ class UserController
             $errors['username'] = "Username bevat onbekende tekens";
         }
 
+
         if (empty($password)) {
             $errors['password'] = "Password is verplicht";
+        } else {
+
+            if (strlen($password) < 8) {
+                $errors['password'] = "Password moet minimaal 8 tekens bevatten";
+            }
+
+            if (!preg_match('/[A-Z]/', $password)) {
+                $errors['password'] = "Password moet minstens één hoofdletter bevatten";
+            }
+
+            if (!preg_match('/[a-z]/', $password)) {
+                $errors['password'] = "Password moet minstens één kleine letter bevatten";
+            }
+
+            if (!preg_match('/[0-9]/', $password)) {
+                $errors['password'] = "Password moet minstens één cijfer bevatten";
+            }
+
+            if (!preg_match('/[\W]/', $password)) {
+                $errors['password'] = "Password moet minstens één speciaal teken bevatten";
+            }
         }
 
         $users = $this->userRepository->all();

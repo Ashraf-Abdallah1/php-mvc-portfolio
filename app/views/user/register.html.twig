@@ -47,6 +47,9 @@
                        name="password"
                        placeholder="password"
                        required>
+                <div class="form-text text-muted small mt-1">
+                    Minimaal 8 tekens, 1 hoofdletter, 1 kleine letter, 1 cijfer en 1 speciaal teken.
+                </div>
 
                 {% if errors.password %}
                     <div class="text-danger small mt-1">{{ errors.password|e }}</div>
