@@ -3,7 +3,9 @@
 namespace App;
 
 use App\Controllers\BlogController;
+use App\Controllers\DashboardController;
 use App\Controllers\HomeController;
+use App\Controllers\ProfileController;
 use App\Controllers\UserController;
 use App\Middleware\AdminMiddleware;
 use App\Middleware\AuthMiddleware;
@@ -22,8 +24,8 @@ class RouteProvider implements RouteProviderInterface
         $authMiddleware = $container->get(AuthMiddleware::class);
         $adminMiddleware = $container->get(AdminMiddleware::class);
 
-//        $router->addMiddleware([$authMiddleware, 'handle']);
-//        $router->addMiddleware([$adminMiddleware, 'handle']);
+        $router->addMiddleware([$authMiddleware, 'handle']);
+        $router->addMiddleware([$adminMiddleware, 'handle']);
 
 
         $homeController = $container->get(HomeController::class);
@@ -49,5 +51,20 @@ class RouteProvider implements RouteProviderInterface
         $router->addRoute('POST', '/blogs/(?<id>\d+)', [$blogController, "update"]);
         $router->addRoute('POST', '/blogs/(?<id>\d+)/deleteConfirm', [$blogController, "deleteConfirm"]);
         $router->addRoute('POST', '/blogs/(?<id>\d+)/delete', [$blogController, "delete"]);
+
+        $profileController = $container->get(ProfileController::class);
+        $router->addRoute('GET', '/profile', [$profileController, 'index']);
+        $router->addRoute('GET', '/profile/edit', [$profileController, 'edit']);
+        $router->addRoute('POST', '/profile/(?<id>\d+)', [$profileController, 'update']);
+
+        $dashboardController = $container->get(DashboardController::class);
+        $router->addRoute('GET', '/dashboard', [$dashboardController, 'index']);
+        $router->addRoute('GET', '/dashboard/edit', [$dashboardController, 'edit']);
+        $router->addRoute('POST', '/dashboard/update-credits', [$dashboardController, 'updateCredits']);
+        $router->addRoute('POST', '/dashboard/update-grade', [$dashboardController, 'updateGrade']);
+        $router->addRoute('POST', '/dashboard/add-course', [$dashboardController, 'addCourse']);
+        $router->addRoute('POST', '/dashboard/delete-course', [$dashboardController, 'deleteCourse']);
+
+
     }
 }

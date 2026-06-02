@@ -8,6 +8,7 @@ use Framework\Kernel;
 $config = [];
 
 try {
+    // HIER ZO VOOR Production
     $config = EnvLoader::load(__DIR__ . '/.env.local');
 } catch (Exception $e) {
     die("ENV ERROR: " . $e->getMessage());
