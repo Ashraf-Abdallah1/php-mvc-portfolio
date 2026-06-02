@@ -6,10 +6,6 @@ CREATE TABLE Users (
                        role VARCHAR(50) NOT NULL DEFAULT 'user'
 );
 
--- CREATE  TABLE Users(
---                        id integer primary key Autoincrement,
---                        name text,
---                        username text,
---                        password text,
---                        role TEXT NOT NULL DEFAULT 'user'
--- )
+insert into Users (id, name, username, password, role) VALUES
+                                                           (1,'admin', 'admin', '$2y$10$qQbGwBGYGsuHKkfhpg1hOelfSGH4D6MeWAgJbxJHxhikrXri6a/R2', 'admin' ),
+                                                           (2,'test', 'test', '$2y$10$qQbGwBGYGsuHKkfhpg1hOelfSGH4D6MeWAgJbxJHxhikrXri6a/R2', 'test' )

@@ -3,12 +3,18 @@
 namespace App;
 
 use App\Controllers\BlogController;
+use App\Controllers\DashboardController;
 use App\Controllers\HomeController;
+use App\Controllers\ProfileController;
 use App\Controllers\UserController;
 use App\Middleware\AdminMiddleware;
 use App\Middleware\AuthMiddleware;
 use App\Repositories\BlogRepository;
 use App\Repositories\BlogRepositoryInterface;
+use App\Repositories\DashboardRepository;
+use App\Repositories\DashboardRepositoryInterface;
+use App\Repositories\ProfileRepository;
+use App\Repositories\ProfileRepositoryInterface;
 use App\Repositories\UserRepository;
 use App\Repositories\UserRepositoryInterface;
 use App\Services\AuthService;
@@ -59,5 +65,18 @@ class ServiceProvider implements ServiceProviderInterface
 
         $blogController = new BlogController($responseFactory, $blogRepository, $authService);
         $container->set(BlogController::class, $blogController);
+
+        $profileRepository = new ProfileRepository($database);
+        $container->set(ProfileRepositoryInterface::class, $profileRepository);
+
+        $profileController = new ProfileController($responseFactory, $profileRepository, $authService);
+        $container->set(ProfileController::class, $profileController);
+
+        $dashboardRepository = new DashboardRepository($database);
+        $container->set(DashboardRepositoryInterface::class, $dashboardRepository);
+
+        $dashboardController = new DashboardController($dashboardRepository, $responseFactory, $authService);
+        $container->set(DashboardController::class, $dashboardController);
+
     }
 }
