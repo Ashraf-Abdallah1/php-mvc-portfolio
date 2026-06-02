@@ -5,6 +5,7 @@ namespace Controllers;
 use App\Controllers\BlogController;
 use App\Models\Blog;
 use App\Repositories\BlogRepositoryInterface;
+use App\Services\AuthService;
 use Framework\Request;
 use Framework\Response;
 use Framework\ResponseFactory;
@@ -18,6 +19,8 @@ class BlogControllerTest extends TestCase
     private BlogRepositoryInterface&MockObject $blogRepository;
     private ResponseFactory&MockObject $responseFactory;
 
+    private AuthService $authService;
+
     private BlogController $controller;
 
     protected function setUp(): void
@@ -26,10 +29,12 @@ class BlogControllerTest extends TestCase
 
         $this->blogRepository = $this->createMock(BlogRepositoryInterface::class);
         $this->responseFactory = $this->createMock(ResponseFactory::class);
+        $this->authService = $this->createMock(AuthService::class);
 
         $this->controller = new BlogController(
             $this->responseFactory,
-            $this->blogRepository
+            $this->blogRepository,
+            $this->authService
         );
     }
 
@@ -51,7 +56,8 @@ class BlogControllerTest extends TestCase
             ->expects($this->once())
             ->method('view')
             ->with('blog/index.html.twig', [
-                'blogs' => $blogs
+                'blogs' => $blogs,
+                'isAdmin' => $this->authService->isAdmin(),
             ])
             ->willReturn($expectedResponse);
 
@@ -66,7 +72,7 @@ class BlogControllerTest extends TestCase
 
         $request = new Request('GET', '/blogs/1', [
             'id' => 1
-        ],[]);
+        ], []);
 
         $expectedResponse = $this->createMock(Response::class);
 
@@ -80,7 +86,8 @@ class BlogControllerTest extends TestCase
             ->expects($this->once())
             ->method('view')
             ->with('blog/show.html.twig', [
-                'blog' => $blog
+                'blog' => $blog,
+                'isAdmin' => $this->authService->isAdmin(),
             ])
             ->willReturn($expectedResponse);
 
@@ -91,7 +98,7 @@ class BlogControllerTest extends TestCase
 
     public function testCreateReturnsCreateView(): void
     {
-        $request = new Request('GET', '/blogs/create',[],[]);
+        $request = new Request('GET', '/blogs/create', [], []);
 
         $expectedResponse = $this->createMock(Response::class);
 
@@ -183,7 +190,7 @@ class BlogControllerTest extends TestCase
 
         $request = new Request('GET', '/blogs/edit', [
             'id' => 1
-        ],[]);
+        ], []);
 
         $expectedResponse = $this->createMock(Response::class);
 
@@ -197,7 +204,8 @@ class BlogControllerTest extends TestCase
             ->expects($this->once())
             ->method('view')
             ->with('blog/edit.html.twig', [
-                'blog' => $blog
+                'blog' => $blog,
+                'isAdmin' => $this->authService->isAdmin(),
             ])
             ->willReturn($expectedResponse);
 
@@ -260,7 +268,8 @@ class BlogControllerTest extends TestCase
             ->expects($this->once())
             ->method('view')
             ->with('blog/deleteConfirm.html.twig', [
-                'blog' => $blog
+                'blog' => $blog,
+                'isAdmin' => $this->authService->isAdmin(),
             ])
             ->willReturn($expectedResponse);
 
