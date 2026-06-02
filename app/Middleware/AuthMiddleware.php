@@ -30,8 +30,7 @@ class AuthMiddleware
         }
 
         if (!$this->authService->isLoggedIn()) {
-            header('Location: /login');
-            exit;
+            return $this->responseFactory->view('errors/401.html.twig');
         }
 
         return $next($request);

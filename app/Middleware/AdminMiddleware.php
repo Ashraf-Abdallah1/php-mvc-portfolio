@@ -25,6 +25,13 @@ class AdminMiddleware
             '#^/blogs/\d+/edit$#',
             '#^/blogs/\d+/deleteConfirm$#',
             '#^/blogs/\d+/delete$#',
+            '#^/dashboard/edit$#',
+            '#^/dashboard/update-credits$#',
+            '#^/dashboard/update-grade$#',
+            '#^/dashboard/add-course$#',
+            '#^/dashboard/delete-course$#',
+            '#^/profile/edit$#',
+            '#^/profile/\d+$#',
         ];
 
         $path = $request->path;
