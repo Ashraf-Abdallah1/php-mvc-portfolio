@@ -87,5 +87,4 @@ class DashboardRepository implements DashboardRepositoryInterface
             ['course' => $course]
         );
     }
-
 }

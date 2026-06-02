@@ -17,10 +17,9 @@ class DashboardController
 
     public function __construct(
         DashboardRepositoryInterface $dashboardRepository,
-        ResponseFactory              $response,
-        AuthService                  $authService,
-    )
-    {
+        ResponseFactory $response,
+        AuthService $authService,
+    ) {
         $this->dashboardRepository = $dashboardRepository;
         $this->response = $response;
         $this->authService = $authService;

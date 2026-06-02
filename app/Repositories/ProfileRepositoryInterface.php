@@ -11,6 +11,4 @@ interface ProfileRepositoryInterface
     public function update(Profile $profile): void;
 
     public function findById(int $id): ?Profile;
-
-
 }

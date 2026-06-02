@@ -54,7 +54,9 @@ class ProfileRepository implements ProfileRepositoryInterface
 
     private function fromDbRow($row): ?Profile
     {
-        if (!$row) return null;
+        if (!$row) {
+            return null;
+        }
 
         $p = new Profile();
         $p->setId($row->id);
@@ -67,5 +69,4 @@ class ProfileRepository implements ProfileRepositoryInterface
 
         return $p;
     }
-
 }

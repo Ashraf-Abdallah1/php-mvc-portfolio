@@ -15,5 +15,4 @@ interface DashboardRepositoryInterface
     public function addCourse(string $course, float $grade): void;
 
     public function deleteCourse(string $course): void;
-
 }

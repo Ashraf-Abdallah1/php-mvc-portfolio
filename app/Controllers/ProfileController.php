@@ -16,11 +16,10 @@ class ProfileController
     private AuthService $auth;
 
     public function __construct(
-        ResponseFactory   $responseFactory,
+        ResponseFactory $responseFactory,
         ProfileRepositoryInterface $profileRepository,
-        AuthService       $auth
-    )
-    {
+        AuthService $auth
+    ) {
         $this->responseFactory = $responseFactory;
         $this->profileRepository = $profileRepository;
         $this->auth = $auth;

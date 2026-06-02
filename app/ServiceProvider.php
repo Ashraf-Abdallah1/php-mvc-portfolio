@@ -77,6 +77,5 @@ class ServiceProvider implements ServiceProviderInterface
 
         $dashboardController = new DashboardController($dashboardRepository, $responseFactory, $authService);
         $container->set(DashboardController::class, $dashboardController);
-
     }
 }

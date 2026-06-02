@@ -80,6 +80,5 @@ class Profile
     public function setContact(string $contact): void
     {
         $this->contact = $contact;
-
     }
 }

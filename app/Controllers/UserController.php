@@ -18,11 +18,10 @@ class UserController
     private AuthService $authService;
 
     public function __construct(
-        ResponseFactory         $response,
+        ResponseFactory $response,
         UserRepositoryInterface $userRepository,
-        AuthService             $authService,
-    )
-    {
+        AuthService $authService,
+    ) {
         $this->response = $response;
         $this->userRepository = $userRepository;
         $this->authService = $authService;
@@ -107,7 +106,6 @@ class UserController
         if (empty($password)) {
             $errors['password'] = "Password is verplicht";
         } else {
-
             if (strlen($password) < 8) {
                 $errors['password'] = "Password moet minimaal 8 tekens bevatten";
             }

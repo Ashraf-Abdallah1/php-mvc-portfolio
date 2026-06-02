@@ -64,7 +64,5 @@ class RouteProvider implements RouteProviderInterface
         $router->addRoute('POST', '/dashboard/update-grade', [$dashboardController, 'updateGrade']);
         $router->addRoute('POST', '/dashboard/add-course', [$dashboardController, 'addCourse']);
         $router->addRoute('POST', '/dashboard/delete-course', [$dashboardController, 'deleteCourse']);
-
-
     }
 }

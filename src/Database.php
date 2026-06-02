@@ -14,8 +14,7 @@ class Database
         string $db,
         string $user,
         string $pass
-    )
-    {
+    ) {
         $dsn = "mysql:host=$host;dbname=$db;charset=utf8mb4";
 
         $this->connection = new PDO($dsn, $user, $pass);
