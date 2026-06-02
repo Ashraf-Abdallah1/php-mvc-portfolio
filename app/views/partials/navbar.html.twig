@@ -1,40 +1,53 @@
-<nav class="navbar navbar-expand-lg navbar-dark bg-primary sticky-top px-4 shadow-sm">
-    <a class="navbar-brand d-flex align-items-center gap-2" href="/">
-        <img src="/assets/logo-image.png" alt="logo" class="rounded-circle shadow-sm" width="48" height="48">
-        <span class="fw-semibold">HZ | University of Applied Sciences</span>
+<nav class="navbar navbar-expand-lg shadow-sm"
+     style="background: linear-gradient(135deg, #1e9e63, #157347); padding: 0.8rem 1.5rem;">
+
+    <a class="navbar-brand d-flex align-items-center gap-3 text-white fw-semibold" href="/">
+        <img src="/assets/logo-image.png"
+             alt="logo"
+             class="rounded-circle shadow-sm"
+             width="52"
+             height="52"
+             style="border: 2px solid rgba(255,255,255,0.4);">
+        <span class="fs-5">HZ | University of Applied Sciences</span>
     </a>
 
-    <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#mainNav">
+    <button class="navbar-toggler border-0 shadow-none"
+            type="button"
+            data-bs-toggle="collapse"
+            data-bs-target="#mainNav">
         <span class="navbar-toggler-icon"></span>
     </button>
 
     <div class="collapse navbar-collapse" id="mainNav">
-        <ul class="navbar-nav ms-auto align-items-lg-center gap-2">
+        <ul class="navbar-nav ms-auto align-items-lg-center gap-3">
 
             <li class="nav-item">
-                <a class="nav-link {% if active == 'home' %}active{% endif %}" href="/">HOME</a>
+                <a class="nav-link text-white {% if active == 'home' %}active-link{% endif %}"
+                   href="/">Home</a>
             </li>
 
             <li class="nav-item">
-                <a class="nav-link {% if active == 'profile' %}active{% endif %}" href="/profile">PROFILE</a>
+                <a class="nav-link text-white {% if active == 'profile' %}active-link{% endif %}"
+                   href="/profile">Profile</a>
             </li>
 
             <li class="nav-item">
-                <a class="nav-link {% if active == 'dashboard' %}active{% endif %}" href="/dashboard">DASHBOARD</a>
+                <a class="nav-link text-white {% if active == 'dashboard' %}active-link{% endif %}"
+                   href="/dashboard">Dashboard</a>
             </li>
 
             <li class="nav-item">
-                <a class="nav-link {% if active == 'blog' %}active{% endif %}" href="/blogs">BLOG</a>
+                <a class="nav-link text-white {% if active == 'blog' %}active-link{% endif %}"
+                   href="/blogs">Blog</a>
             </li>
 
             <li class="nav-item">
                 <form method="POST" action="/logout" class="m-0">
                     <button type="submit"
-                            class="btn btn-outline-light rounded-circle d-flex align-items-center justify-content-center logout-btn"
-                            style="width: 42px; height: 42px;"
+                            class="btn btn-light text-success fw-semibold rounded-pill px-4 py-2 shadow-sm d-flex align-items-center gap-2"
                             title="Uitloggen">
-
                         <i class="bi bi-box-arrow-right fs-5"></i>
+                        Uitloggen
                     </button>
                 </form>
             </li>
@@ -42,3 +55,17 @@
         </ul>
     </div>
 </nav>
+
+<style>
+    .active-link {
+        font-weight: 700;
+        border-bottom: 3px solid white;
+        padding-bottom: 4px;
+    }
+
+    /* Hover effect */
+    .nav-link:hover {
+        opacity: 0.85;
+        transition: 0.2s;
+    }
+</style>

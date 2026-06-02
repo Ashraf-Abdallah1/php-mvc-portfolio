@@ -2,51 +2,70 @@
 {% set pageTitle = "Register" %}
 
 {% block formContent %}
-    <form method="POST" action="/register">
 
-        <div class="mb-3">
-            <label for="name" class="form-label">Name</label>
-            <input type="text"
-                   class="form-control"
-                   id="name"
-                   name="name"
-                   placeholder="name">
-            {% if errors.name %}
-                <div class="text-danger small mt-1">{{ errors.name|e }}</div>
-            {% endif %}
-        </div>
+    <div class="p-4 bg-white shadow rounded-4 border-start border-4 border-success">
 
-        <div class="mb-3">
-            <label for="username" class="form-label">Username</label>
-            <input type="text"
-                   class="form-control"
-                   id="username"
-                   name="username"
-                   placeholder="unique"
-                   value="{{ old.username ?? '' }}"
-                   required>
-            {% if errors.username %}
-                <div class="text-danger small mt-1">{{ errors.username|e }}</div>
-            {% endif %}
-        </div>
+        <h2 class="fw-bold text-success text-center mb-4">Registreren</h2>
 
-        <div class="mb-3">
-            <label for="password" class="form-label">Password</label>
-            <input type="password"
-                   class="form-control"
-                   id="password"
-                   name="password"
-                   placeholder="password"
-                   required>
-            {% if errors.password %}
-                <div class="text-danger small mt-1">{{ errors.password|e }}</div>
-            {% endif %}
-        </div>
+        <form method="POST" action="/register">
 
-        <button type="submit" class="btn btn-primary w-100">Register</button>
+            <div class="mb-3">
+                <label for="name" class="form-label fw-semibold text-success">Naam</label>
+                <input type="text"
+                       class="form-control border-success shadow-sm"
+                       id="name"
+                       name="name"
+                       placeholder="naam"
+                       value="{{ old.name ?? '' }}"
+                       required>
 
-        <p class="text-center mt-3">
-            <a href="/login" class="text-decoration-none">Heb je all een account? Log in</a>
-        </p>
-    </form>
+                {% if errors.name %}
+                    <div class="text-danger small mt-1">{{ errors.name|e }}</div>
+                {% endif %}
+            </div>
+
+            <div class="mb-3">
+                <label for="username" class="form-label fw-semibold text-success">Username</label>
+                <input type="text"
+                       class="form-control border-success shadow-sm"
+                       id="username"
+                       name="username"
+                       placeholder="unique"
+                       value="{{ old.username ?? '' }}"
+                       required>
+
+                {% if errors.username %}
+                    <div class="text-danger small mt-1">{{ errors.username|e }}</div>
+                {% endif %}
+            </div>
+
+            <div class="mb-3">
+                <label for="password" class="form-label fw-semibold text-success">Password</label>
+                <input type="password"
+                       class="form-control border-success shadow-sm"
+                       id="password"
+                       name="password"
+                       placeholder="password"
+                       required>
+
+                {% if errors.password %}
+                    <div class="text-danger small mt-1">{{ errors.password|e }}</div>
+                {% endif %}
+            </div>
+
+            <button type="submit"
+                    class="btn btn-success w-100 py-2 shadow-sm fw-semibold rounded-pill">
+                Register
+            </button>
+
+            <p class="text-center mt-3">
+                <a href="/login" class="text-success fw-semibold text-decoration-none">
+                    Heb je al een account? Log in
+                </a>
+            </p>
+
+        </form>
+
+    </div>
+
 {% endblock %}
