@@ -89,13 +89,14 @@ class Session
     {
         session_name('maestro');
 
-        session_set_cookie_params([
-            'path' => '/',
-            'domain' => '',
-            'secure' => true,
-            'httponly' => true,
-            'samesite' => 'Strict',
-        ]);
+        // straks voor cookies ):
+//        session_set_cookie_params([
+//            'path' => '/',
+//            'domain' => '',
+//            'secure' => true,
+//            'httponly' => true,
+//            'samesite' => 'Strict',
+//        ]);
 
         session_start();
     }

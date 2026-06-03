@@ -2,6 +2,7 @@
 
 namespace App;
 
+use App\Controllers\ApiController;
 use App\Controllers\BlogController;
 use App\Controllers\DashboardController;
 use App\Controllers\HomeController;
@@ -77,5 +78,8 @@ class ServiceProvider implements ServiceProviderInterface
 
         $dashboardController = new DashboardController($dashboardRepository, $responseFactory, $authService);
         $container->set(DashboardController::class, $dashboardController);
+
+        $apiController = new ApiController($responseFactory, $blogRepository);
+        $container->set(ApiController::class, $apiController);
     }
 }
