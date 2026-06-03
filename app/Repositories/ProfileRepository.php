@@ -7,26 +7,28 @@ use Framework\Database;
 
 class ProfileRepository implements ProfileRepositoryInterface
 {
-    private Database $db;
+    private Database $database;
 
-    public function __construct(Database $db)
+    public function __construct(Database $database)
     {
-        $this->db = $db;
+        $this->database = $database;
     }
 
     public function findByUserId(int $userId): ?Profile
     {
-        $row = $this->db->run(
-            "SELECT * FROM Profiles WHERE user_id = :uid",
-            ['uid' => $userId]
-        )->fetch();
+        $stmt = $this->database->prepare(
+            "SELECT * FROM Profiles WHERE user_id = :uid"
+        );
+        $stmt->execute(['uid' => $userId]);
+
+        $row = $stmt->fetch();
 
         return $this->fromDbRow($row);
     }
 
     public function update(Profile $profile): void
     {
-        $this->db->run(
+        $stmt = $this->database->prepare(
             "UPDATE Profiles SET 
                 name = :name,
                 bio = :bio,
@@ -34,22 +36,29 @@ class ProfileRepository implements ProfileRepositoryInterface
                 experience = :experience,
                 projects = :projects,
                 contact = :contact
-             WHERE id = 1",
-            [
-                'name' => $profile->getName(),
-                'bio' => $profile->getBio(),
-                'skills' => $profile->getSkills(),
-                'experience' => $profile->getExperience(),
-                'projects' => $profile->getProjects(),
-                'contact' => $profile->getContact(),
-            ]
+             WHERE id = 1"
         );
+
+        $stmt->execute([
+            'name' => $profile->getName(),
+            'bio' => $profile->getBio(),
+            'skills' => $profile->getSkills(),
+            'experience' => $profile->getExperience(),
+            'projects' => $profile->getProjects(),
+            'contact' => $profile->getContact(),
+        ]);
     }
 
     public function findById(int $id): ?Profile
     {
-        $stmt = $this->db->run("SELECT * FROM Profiles WHERE id = :id", ['id' => $id])->fetch();
-        return $this->fromDbRow($stmt);
+        $stmt = $this->database->prepare(
+            "SELECT * FROM Profiles WHERE id = :id"
+        );
+        $stmt->execute(['id' => $id]);
+
+        $row = $stmt->fetch();
+
+        return $this->fromDbRow($row);
     }
 
     private function fromDbRow(mixed $row): ?Profile
@@ -58,15 +67,15 @@ class ProfileRepository implements ProfileRepositoryInterface
             return null;
         }
 
-        $p = new Profile();
-        $p->setId($row->id);
-        $p->setName($row->name);
-        $p->setBio($row->bio);
-        $p->setSkills($row->skills);
-        $p->setExperience($row->experience);
-        $p->setProjects($row->projects);
-        $p->setContact($row->contact);
+        $profile = new Profile();
+        $profile->setId($row->id);
+        $profile->setName($row->name);
+        $profile->setBio($row->bio);
+        $profile->setSkills($row->skills);
+        $profile->setExperience($row->experience);
+        $profile->setProjects($row->projects);
+        $profile->setContact($row->contact);
 
-        return $p;
+        return $profile;
     }
 }

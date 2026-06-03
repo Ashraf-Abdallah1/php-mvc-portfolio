@@ -21,6 +21,11 @@ class AdminMiddleware
 
     public function handle(Request $request, callable $next): Response
     {
+
+        if (session_status() === PHP_SESSION_NONE) {
+            session_start();
+        }
+
         $adminRoutes = [
             '#^/blogs/\d+/edit$#',
             '#^/blogs/\d+/deleteConfirm$#',

@@ -3,7 +3,6 @@
 namespace App\Repositories;
 
 use App\Models\Blog;
-use App\Repositories\BlogRepositoryInterface;
 use Framework\Database;
 use RuntimeException;
 
@@ -22,51 +21,76 @@ class BlogRepository implements BlogRepositoryInterface
     public function all(): array
     {
         $blogs = [];
-        $stmt = $this->database->run("SELECT * FROM Blogs")->fetchAll();
 
-        foreach ($stmt as $blog) {
+        $stmt = $this->database->prepare("SELECT * FROM Blogs");
+        $stmt->execute();
+        $rows = $stmt->fetchAll();
+
+        foreach ($rows as $blog) {
             $rowBlog = $this->fromDbRow($blog);
             $blogs[] = $rowBlog;
         }
+
         return $blogs;
     }
 
     public function findById(int $id): ?Blog
     {
-        $stmt = $this->database->run("SELECT * FROM Blogs WHERE id = :id", ['id' => $id])->fetch();
-        return $this->fromDbRow($stmt);
+        $stmt = $this->database->prepare(
+            "SELECT * FROM Blogs WHERE id = :id"
+        );
+
+        $stmt->execute(['id' => $id]);
+
+        $row = $stmt->fetch();
+
+        return $this->fromDbRow($row);
     }
 
     public function insert(Blog $blog): Blog
     {
-        $stmt = $this->database->run("INSERT INTO Blogs (title, content, created_date) 
-            VALUES (:title, :content, :created_date)", [
+        $stmt = $this->database->prepare(
+            "INSERT INTO Blogs (title, content, created_date)
+             VALUES (:title, :content, :created_date)"
+        );
+
+        $stmt->execute([
             "title" => $blog->getTitle(),
             "content" => $blog->getContent(),
             "created_date" => $blog->getDate()
         ]);
+
         $blog->setId($this->database->getLastID());
         return $blog;
     }
 
     public function update(Blog $blog): Blog
     {
-        $stmt = $this->database->run("update Blogs set
-                 title =:title,
-                 content=:content,
-                 created_date=:created_date
-                where id = :id", [
+        $stmt = $this->database->prepare(
+            "UPDATE Blogs SET
+                title = :title,
+                content = :content,
+                created_date = :created_date
+             WHERE id = :id"
+        );
+
+        $stmt->execute([
             "title" => $blog->getTitle(),
             "id" => $blog->getId(),
             "content" => $blog->getContent(),
             "created_date" => $blog->getDate()
         ]);
+
         return $blog;
     }
 
     public function delete(int $id): bool
     {
-        $stmt = $this->database->run("delete from Blogs where id = :id", ['id' => $id]);
+        $stmt = $this->database->prepare(
+            "DELETE FROM Blogs WHERE id = :id"
+        );
+
+        $stmt->execute(['id' => $id]);
 
         return $stmt->rowCount() > 0;
     }
@@ -82,6 +106,7 @@ class BlogRepository implements BlogRepositoryInterface
         $blog->setContent($row->content);
         $blog->setDate($row->created_date);
         $blog->setId($row->id);
+
         return $blog;
     }
 }

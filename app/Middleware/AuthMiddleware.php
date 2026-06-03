@@ -29,6 +29,10 @@ class AuthMiddleware
             return $next($request);
         }
 
+        if (session_status() === PHP_SESSION_NONE) {
+            session_start();
+        }
+
         if (!$this->authService->isLoggedIn()) {
             return $this->responseFactory->view('errors/401.html.twig');
         }

@@ -17,20 +17,25 @@ class DashboardRepository implements DashboardRepositoryInterface
     public function getDashboardData(): Dashboard
     {
         $dashboard = new Dashboard();
-        $row = $this->db->run(
+
+        $stmt = $this->db->prepare(
             "SELECT earned_credits, total_credits 
              FROM Dashboards 
              WHERE user_id = 1"
-        )->fetch();
+        );
+        $stmt->execute();
+        $row = $stmt->fetch();
 
         $dashboard->setEarnedCredits($row->earned_credits);
         $dashboard->setTotalCredits($row->total_credits);
 
-        $grades = $this->db->run(
+        $stmtGrades = $this->db->prepare(
             "SELECT course, grade 
              FROM Grades 
              WHERE user_id = 1"
-        )->fetchAll();
+        );
+        $stmtGrades->execute();
+        $grades = $stmtGrades->fetchAll();
 
         $gradeList = [];
         foreach ($grades as $g) {
@@ -44,47 +49,54 @@ class DashboardRepository implements DashboardRepositoryInterface
 
     public function updateCredits(int $earned, int $total): void
     {
-        $this->db->run(
+        $stmt = $this->db->prepare(
             "UPDATE Dashboards 
              SET earned_credits = :earned, total_credits = :total 
-             WHERE user_id = 1",
-            [
-                'earned' => $earned,
-                'total' => $total
-            ]
+             WHERE user_id = 1"
         );
+
+        $stmt->execute([
+            'earned' => $earned,
+            'total' => $total
+        ]);
     }
 
     public function updateGrade(string $course, float $grade): void
     {
-        $this->db->run(
+        $stmt = $this->db->prepare(
             "UPDATE Grades 
              SET grade = :grade 
-             WHERE user_id = 1 AND course = :course",
-            [
-                'grade' => $grade,
-                'course' => $course
-            ]
+             WHERE user_id = 1 AND course = :course"
         );
+
+        $stmt->execute([
+            'grade' => $grade,
+            'course' => $course
+        ]);
     }
 
     public function addCourse(string $course, float $grade): void
     {
-        $this->db->run(
+        $stmt = $this->db->prepare(
             "INSERT INTO Grades (user_id, course, grade)
-             VALUES (1, :course, :grade)",
-            [
-                'course' => $course,
-                'grade' => $grade
-            ]
+             VALUES (1, :course, :grade)"
         );
+
+        $stmt->execute([
+            'course' => $course,
+            'grade' => $grade
+        ]);
     }
 
     public function deleteCourse(string $course): void
     {
-        $this->db->run(
-            "DELETE FROM Grades WHERE user_id = 1 AND course = :course",
-            ['course' => $course]
+        $stmt = $this->db->prepare(
+            "DELETE FROM Grades 
+             WHERE user_id = 1 AND course = :course"
         );
+
+        $stmt->execute([
+            'course' => $course
+        ]);
     }
 }
