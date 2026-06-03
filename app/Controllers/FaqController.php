@@ -5,7 +5,7 @@ namespace App\Controllers;
 use Framework\Response;
 use Framework\ResponseFactory;
 
-class faqController
+class FaqController
 {
     private ResponseFactory $responseFactory;
 
