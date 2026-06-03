@@ -66,6 +66,15 @@ class ResponseFactory
         }
     }
 
+    public function json(mixed $data, int $statusCode = 200): Response
+    {
+        $response = new Response();
+        $response->responseCode = $statusCode;
+        $response->body = (string)json_encode($data);
+        $response->header = "Content-Type: application/json";
+        return $response;
+    }
+
     public function redirect(string $url): Response
     {
         $response = new Response();

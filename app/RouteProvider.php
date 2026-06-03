@@ -2,6 +2,7 @@
 
 namespace App;
 
+use App\Controllers\ApiController;
 use App\Controllers\BlogController;
 use App\Controllers\DashboardController;
 use App\Controllers\faqController;
