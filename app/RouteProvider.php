@@ -5,6 +5,7 @@ namespace App;
 use App\Controllers\ApiController;
 use App\Controllers\BlogController;
 use App\Controllers\DashboardController;
+use App\Controllers\FaqController;
 use App\Controllers\HomeController;
 use App\Controllers\ProfileController;
 use App\Controllers\UserController;
@@ -66,6 +67,9 @@ class RouteProvider implements RouteProviderInterface
         $router->addRoute('POST', '/dashboard/add-course', [$dashboardController, 'addCourse']);
         $router->addRoute('POST', '/dashboard/delete-course', [$dashboardController, 'deleteCourse']);
 
+
+        $faqController = $container->get(FaqController::class);
+        $router->addRoute('GET', '/faq', [$faqController, 'index']);
 
         $apiController = $container->get(ApiController::class);
         $router->addRoute('GET', '/blogs', [$apiController, 'blogs']);

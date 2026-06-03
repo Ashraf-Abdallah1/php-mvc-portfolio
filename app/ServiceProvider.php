@@ -5,6 +5,7 @@ namespace App;
 use App\Controllers\ApiController;
 use App\Controllers\BlogController;
 use App\Controllers\DashboardController;
+use App\Controllers\FaqController;
 use App\Controllers\HomeController;
 use App\Controllers\ProfileController;
 use App\Controllers\UserController;
@@ -81,5 +82,9 @@ class ServiceProvider implements ServiceProviderInterface
 
         $apiController = new ApiController($responseFactory, $blogRepository);
         $container->set(ApiController::class, $apiController);
+
+
+        $faqController = new FaqController($responseFactory);
+        $container->set(FaqController::class, $faqController);
     }
 }
