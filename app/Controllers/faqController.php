@@ -7,7 +7,6 @@ use Framework\ResponseFactory;
 
 class faqController
 {
-
     private ResponseFactory $responseFactory;
 
     public function __construct(ResponseFactory $responseFactory)
@@ -21,5 +20,4 @@ class faqController
             'active' => "faq"
         ]);
     }
-
 }
