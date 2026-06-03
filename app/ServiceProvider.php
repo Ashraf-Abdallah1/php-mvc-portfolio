@@ -84,7 +84,7 @@ class ServiceProvider implements ServiceProviderInterface
         $container->set(ApiController::class, $apiController);
 
 
-        $faqController = new FaqController($responseFactory, $blogRepository);
+        $faqController = new FaqController($responseFactory);
         $container->set(FaqController::class, $faqController);
     }
 }
