@@ -3,16 +3,16 @@
 namespace App\Services;
 
 use App\Models\User;
-use App\Repositories\UserRepository;
+use App\Repositories\UserRepositoryInterface;
 use Framework\Session;
 
 class AuthService
 {
-    private UserRepository $userRepository;
+    private UserRepositoryInterface $userRepository;
 
     private Session $session;
 
-    public function __construct(UserRepository $userRepository, Session $session)
+    public function __construct(UserRepositoryInterface $userRepository, Session $session)
     {
         $this->userRepository = $userRepository;
         $this->session = $session;
