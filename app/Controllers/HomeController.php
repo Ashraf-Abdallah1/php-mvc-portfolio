@@ -16,6 +16,8 @@ class HomeController
 
     public function index(): Response
     {
-        return $this->responseFactory->view('index.html.twig');
+        return $this->responseFactory->view('index.html.twig', [
+            'active' => "home"
+        ]);
     }
 }

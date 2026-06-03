@@ -60,7 +60,8 @@ class DashboardControllerTest extends TestCase
             ->method('view')
             ->with('dashboard/index.html.twig', [
                 'dashboard' => $dashboard,
-                'isAdmin' => true
+                'isAdmin' => true,
+                'active' => "dashboard",
             ])
             ->willReturn($expectedResponse);
 
@@ -108,7 +109,8 @@ class DashboardControllerTest extends TestCase
             ->expects($this->once())
             ->method('view')
             ->with('dashboard/edit.html.twig', [
-                'dashboard' => $dashboard
+                'dashboard' => $dashboard,
+                'active' => "dashboard",
             ])
             ->willReturn($expectedResponse);
 

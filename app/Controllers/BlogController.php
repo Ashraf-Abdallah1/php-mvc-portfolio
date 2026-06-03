@@ -37,6 +37,7 @@ class BlogController
         return $this->responseFactory->view('blog/index.html.twig', [
             'blogs' => $blogs,
             'isAdmin' => $this->isAdmin,
+            'active' => "blog",
         ]);
     }
 
@@ -48,13 +49,16 @@ class BlogController
         return $this->responseFactory->view('blog/show.html.twig', [
             'blog' => $blog,
             'isAdmin' => $this->isAdmin,
+            'active' => "blog",
         ]);
     }
 
     public function create(Request $request): Response
     {
         $blogs = $this->blogRepository->all();
-        return $this->responseFactory->view('blog/create.html.twig');
+        return $this->responseFactory->view('blog/create.html.twig', [
+            'active' => "blog",
+        ]);
     }
 
     public function store(Request $request): Response
@@ -71,6 +75,7 @@ class BlogController
                 'errors' => $errors,
                 'oldBlog' => $blog,
                 'isAdmin' => $this->isAdmin,
+                'active' => "blog",
             ]);
         }
 
@@ -87,6 +92,7 @@ class BlogController
         return $this->responseFactory->view('blog/edit.html.twig', [
             'blog' => $blog,
             'isAdmin' => $this->isAdmin,
+            'active' => "blog",
         ]);
     }
 
@@ -105,6 +111,7 @@ class BlogController
                 'errors' => $errors,
                 'oldBlog' => $blog,
                 'isAdmin' => $this->isAdmin,
+                'active' => "blog",
             ]);
         }
         $this->blogRepository->update($blog);
@@ -119,6 +126,7 @@ class BlogController
         return $this->responseFactory->view("blog/deleteConfirm.html.twig", [
             "blog" => $blog,
             "isAdmin" => $this->isAdmin,
+            'active' => "blog",
         ]);
     }
 

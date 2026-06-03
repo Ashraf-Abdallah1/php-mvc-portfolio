@@ -58,6 +58,7 @@ class BlogControllerTest extends TestCase
             ->with('blog/index.html.twig', [
                 'blogs' => $blogs,
                 'isAdmin' => $this->authService->isAdmin(),
+                'active' => "blog",
             ])
             ->willReturn($expectedResponse);
 
@@ -88,6 +89,7 @@ class BlogControllerTest extends TestCase
             ->with('blog/show.html.twig', [
                 'blog' => $blog,
                 'isAdmin' => $this->authService->isAdmin(),
+                'active' => "blog",
             ])
             ->willReturn($expectedResponse);
 
@@ -206,6 +208,7 @@ class BlogControllerTest extends TestCase
             ->with('blog/edit.html.twig', [
                 'blog' => $blog,
                 'isAdmin' => $this->authService->isAdmin(),
+                'active' => "blog",
             ])
             ->willReturn($expectedResponse);
 
@@ -270,6 +273,7 @@ class BlogControllerTest extends TestCase
             ->with('blog/deleteConfirm.html.twig', [
                 'blog' => $blog,
                 'isAdmin' => $this->authService->isAdmin(),
+                'active' => "blog",
             ])
             ->willReturn($expectedResponse);
 

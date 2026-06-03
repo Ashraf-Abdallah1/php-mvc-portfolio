@@ -33,7 +33,8 @@ class ProfileController
 
         return $this->responseFactory->view('profile/index.html.twig', [
             'profile' => $profile,
-            'isAdmin' => $isAdmin
+            'isAdmin' => $isAdmin,
+            'active' => "profile",
         ]);
     }
 
@@ -43,7 +44,8 @@ class ProfileController
         $profile = $this->profileRepository->findById(1);
 
         return $this->responseFactory->view('profile/edit.html.twig', [
-            'profile' => $profile
+            'profile' => $profile,
+            'active' => "profile",
         ]);
     }
 

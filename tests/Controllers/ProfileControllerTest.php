@@ -62,7 +62,8 @@ class ProfileControllerTest extends TestCase
             ->method('view')
             ->with('profile/index.html.twig', [
                 'profile' => $profile,
-                'isAdmin' => true
+                'isAdmin' => true,
+                'active' => "profile",
             ])
             ->willReturn($expectedResponse);
 
@@ -93,7 +94,8 @@ class ProfileControllerTest extends TestCase
             ->expects($this->once())
             ->method('view')
             ->with('profile/edit.html.twig', [
-                'profile' => $profile
+                'profile' => $profile,
+                'active' => "profile",
             ])
             ->willReturn($expectedResponse);
 

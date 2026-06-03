@@ -32,7 +32,8 @@ class DashboardController
 
         return $this->response->view('dashboard/index.html.twig', [
             'dashboard' => $dashboard,
-            'isAdmin' => $isAdmin
+            'isAdmin' => $isAdmin,
+            'active' => "dashboard",
         ]);
     }
 
@@ -45,7 +46,8 @@ class DashboardController
         $dashboard = $this->dashboardRepository->getDashboardData();
 
         return $this->response->view('dashboard/edit.html.twig', [
-            'dashboard' => $dashboard
+            'dashboard' => $dashboard,
+            'active' => "dashboard",
         ]);
     }
 
