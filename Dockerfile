@@ -1,5 +1,6 @@
 FROM php:8.2-apache
 
+# cache bust: v2
 RUN docker-php-ext-install pdo pdo_mysql
 
 # Fix: disable conflicting MPMs, enable only prefork
