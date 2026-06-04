@@ -2,7 +2,7 @@
 
 namespace App;
 
-use App\Controllers\ApiController;
+use App\Controllers\ApiBlogController;
 use App\Controllers\BlogController;
 use App\Controllers\DashboardController;
 use App\Controllers\FaqController;
@@ -71,8 +71,8 @@ class RouteProvider implements RouteProviderInterface
         $faqController = $container->get(FaqController::class);
         $router->addRoute('GET', '/faq', [$faqController, 'index']);
 
-        $apiController = $container->get(ApiController::class);
-        $router->addRoute('GET', '/blogs', [$apiController, 'blogs']);
-        $router->addRoute('GET', '/blogs/(?<id>\d+)', [$apiController, 'blog']);
+        $apiBlogController = $container->get(ApiBlogController::class);
+        $router->addRoute('GET', '/api/blogs', [$apiBlogController, 'blogs']);
+        $router->addRoute('GET', '/api/blogs/(?<id>\d+)', [$apiBlogController, 'blog']);
     }
 }

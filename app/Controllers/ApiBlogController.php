@@ -8,7 +8,7 @@ use Framework\Request;
 use Framework\Response;
 use Framework\ResponseFactory;
 
-class ApiController extends ApiBaseController
+class ApiBlogController extends ApiBaseController
 {
     private BlogRepositoryInterface $blogRepository;
 
@@ -30,9 +30,9 @@ class ApiController extends ApiBaseController
         $id = (int)$request->get('id');
         $blog = $this->blogRepository->findById($id);
         if ($blog === null) {
-            return $this->apiError('blogs', 'Car not found', $request->path, 404, '/api/cars');
+            return $this->apiError('blogs', 'Blog not found', $request->path, 404, '/api/blogs');
         }
-        return $this->apiJson('blogs', $this->blogToArray($blog), $request->path, '/api/cars');
+        return $this->apiJson('blogs', $this->blogToArray($blog), $request->path, '/api/blogs/');
     }
 
     /** @return array<string, mixed> */

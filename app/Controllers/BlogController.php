@@ -35,7 +35,6 @@ class BlogController
         $blogs = $this->blogRepository->all();
 
         return $this->responseFactory->view('blog/index.html.twig', [
-            'blogs' => $blogs,
             'isAdmin' => $this->isAdmin,
             'active' => "blog",
         ]);
@@ -47,7 +46,7 @@ class BlogController
         $id = (int)$request->get('id');
         $blog = $this->blogRepository->findById($id);
         return $this->responseFactory->view('blog/show.html.twig', [
-            'blog' => $blog,
+            'id' => $id,
             'isAdmin' => $this->isAdmin,
             'active' => "blog",
         ]);
