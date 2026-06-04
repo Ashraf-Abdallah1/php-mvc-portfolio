@@ -11,11 +11,7 @@ use Framework\Request;
 
 $config = [];
 
-try {
-    $config = EnvLoader::load(__DIR__ . '/../.env.local');
-} catch (Exception $e) {
-    die("ENV ERROR: " . $e->getMessage());
-}
+$config = EnvLoader::load(__DIR__ . '/../.env.local');
 
 // Initialize the Kernel with configuration
 try {
