@@ -56,7 +56,6 @@ class BlogControllerTest extends TestCase
             ->expects($this->once())
             ->method('view')
             ->with('blog/index.html.twig', [
-                'blogs' => $blogs,
                 'isAdmin' => $this->authService->isAdmin(),
                 'active' => "blog",
             ])
@@ -75,6 +74,7 @@ class BlogControllerTest extends TestCase
             'id' => 1
         ], []);
 
+        $id = $request->get('id');
         $expectedResponse = $this->createMock(Response::class);
 
         $this->blogRepository
@@ -87,7 +87,7 @@ class BlogControllerTest extends TestCase
             ->expects($this->once())
             ->method('view')
             ->with('blog/show.html.twig', [
-                'blog' => $blog,
+                'id' => $id,
                 'isAdmin' => $this->authService->isAdmin(),
                 'active' => "blog",
             ])
