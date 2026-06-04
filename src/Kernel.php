@@ -31,7 +31,7 @@ class Kernel
             $this->configManager->get('DB_NAME'),
             $this->configManager->get('DB_USER'),
             $this->configManager->get('DB_PASSWORD'),
-            $this->configManager->get('DB_PORT')
+            (int)$this->configManager->get('DB_PORT')
         );
 
         $this->container->set(Database::class, $database);

@@ -24,7 +24,6 @@ class Database
                 PDO::ATTR_ERRMODE => PDO::ERRMODE_EXCEPTION,
                 PDO::ATTR_DEFAULT_FETCH_MODE => PDO::FETCH_OBJ
             ]);
-
         } catch (PDOException $e) {
             error_log("DB ERROR: " . $e->getMessage());
             http_response_code(500);
@@ -37,6 +36,11 @@ class Database
         return $this->connection->query($query);
     }
 
+    /**
+     * @param string $sql
+     * @param array<string>|null $params
+     * @return PDOStatement
+     */
     public function run(string $sql, array|null $params = null): PDOStatement
     {
         $stmt = $this->connection->prepare($sql);
