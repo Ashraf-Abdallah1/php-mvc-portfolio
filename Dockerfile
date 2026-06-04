@@ -1,27 +1,25 @@
-FROM php:8.2-apache
+FROM php:apache
+# Cache bust: 1
+RUN apt-get update && apt-get install -y git unzip
+RUN docker-php-ext-install pdo_mysql
+RUN a2dismod mpm_event mpm_worker mpm_prefork || true \
+    && a2enmod mpm_prefork rewrite
+RUN sed -i 's|AllowOverride None|AllowOverride All|g' /etc/apache2/apache2.conf
+RUN sed -i 's|/var/www/html|/var/www/html/public|g' /etc/apache2/sites-available/000-default.conf
+WORKDIR /var/www/html
+COPY . /var/www/html
+COPY --from=composer:latest /usr/bin/composer /usr/bin/composer
+RUN composer install --no-dev --optimize-autoloader
+RUN chown -R www-data:www-data /var/www/html \
+    && chmod -R 755 /var/www/html \
+    && mkdir -p /var/www/html/database \
+    && chown -R www-data:www-data /var/www/html/database \
+    && chmod -R 775 /var/www/html/database
 
-# cache bust: v2
-RUN docker-php-ext-install pdo pdo_mysql
 
-# Fix: disable conflicting MPMs, enable only prefork
-RUN a2dismod mpm_event mpm_worker 2>/dev/null || true && \
-    a2enmod mpm_prefork
 
-RUN a2enmod rewrite
-
-RUN sed -i 's#/var/www/html#/var/www/public#' /etc/apache2/sites-available/000-default.conf
-RUN sed -i 's/AllowOverride None/AllowOverride All/g' /etc/apache2/apache2.conf
-
-COPY . /var/www/
-
-ENV PORT=8080
-EXPOSE 8080
-
-#RUN sed -i "s/Listen 80/Listen ${PORT}/" /etc/apache2/ports.conf
-#RUN sed -i "s/:80/:${PORT}/" /etc/apache2/sites-enabled/000-default.conf
 RUN sed -i "s/Listen 80/Listen 8080/" /etc/apache2/ports.conf
 RUN sed -i "s/:80/:8080/" /etc/apache2/sites-enabled/000-default.conf
 
-RUN apache2ctl -M 2>&1 | grep mpm
-
+EXPOSE 8080
 CMD ["apache2-foreground"]
