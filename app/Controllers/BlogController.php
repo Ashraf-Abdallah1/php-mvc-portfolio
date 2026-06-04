@@ -19,10 +19,11 @@ class BlogController
     private bool $isAdmin = false;
 
     public function __construct(
-        ResponseFactory $responseFactory,
+        ResponseFactory         $responseFactory,
         BlogRepositoryInterface $blogRepository,
-        AuthService $authService,
-    ) {
+        AuthService             $authService,
+    )
+    {
         $this->responseFactory = $responseFactory;
         $this->blogRepository = $blogRepository;
         $this->authService = $authService;
@@ -101,18 +102,24 @@ class BlogController
         $this->isAdmin = $this->authService->isAdmin();
         $blog = new Blog();
         $blog->setId((int)$request->get('id'));
+        $currentBlog = $this->blogRepository->findById($blog->getId());
         $blog->setTitle((string)$request->get('title'));
         $blog->setContent((string)$request->get('content'));
         $blog->setDate(time());
-        $errors = $this->validateBlog($blog);
-        if (!empty($errors)) {
-            return $this->responseFactory->view('blog/edit.html.twig', [
-                'errors' => $errors,
-                'oldBlog' => $blog,
-                'isAdmin' => $this->isAdmin,
-                'active' => "blog",
-            ]);
+        if ($currentBlog instanceof Blog) {
+            if ($currentBlog->getTitle() !== $blog->getTitle()) {
+                $errors = $this->validateBlog($blog);
+                if (!empty($errors)) {
+                    return $this->responseFactory->view('blog/edit.html.twig', [
+                        'errors' => $errors,
+                        'oldBlog' => $blog,
+                        'isAdmin' => $this->isAdmin,
+                        'active' => "blog",
+                    ]);
+                }
+            }
         }
+
         $this->blogRepository->update($blog);
         return $this->responseFactory->redirect('/blogs/' . $blog->getId());
     }
