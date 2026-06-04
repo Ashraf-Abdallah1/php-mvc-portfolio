@@ -13,7 +13,7 @@ COPY . /var/www/
 ENV PORT=8080
 EXPOSE 8080
 
-RUN sed -i "s/80/\${PORT}/g" /etc/apache2/ports.conf
-RUN sed -i "s/:80/:${PORT}/g" /etc/apache2/sites-enabled/000-default.conf
+RUN sed -i "s/Listen 80/Listen ${PORT}/" /etc/apache2/ports.conf
+RUN sed -i "s/:80/:${PORT}/" /etc/apache2/sites-enabled/000-default.conf
 
 CMD ["apache2-foreground"]
