@@ -5,7 +5,8 @@ RUN apt-get update && apt-get install -y git unzip
 
 RUN docker-php-ext-install pdo_mysql
 
-RUN a2enmod rewrite
+RUN a2dismod mpm_event mpm_worker mpm_prefork || true \
+    && a2enmod mpm_prefork rewrite
 
 RUN sed -i 's|AllowOverride None|AllowOverride All|g' /etc/apache2/apache2.conf
 
