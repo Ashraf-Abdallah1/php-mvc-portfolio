@@ -22,4 +22,6 @@ EXPOSE 8080
 RUN sed -i "s/Listen 80/Listen 8080/" /etc/apache2/ports.conf
 RUN sed -i "s/:80/:8080/" /etc/apache2/sites-enabled/000-default.conf
 
+RUN apache2ctl -M 2>&1 | grep mpm
+
 CMD ["apache2-foreground"]
