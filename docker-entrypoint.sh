@@ -18,32 +18,40 @@ echo "Setting Apache to listen on port ${PORT}..."
 sed -i "s/Listen 80/Listen ${PORT}/" /etc/apache2/ports.conf
 echo "ServerName localhost:${PORT}" >> /etc/apache2/apache2.conf
 
-# --- Configure DocumentRoot and permissions ---
+# --- YOUR SUGGESTED FIXES (applied at runtime) ---
+echo "Configuring Apache directives..."
+sed -i 's|AllowOverride None|AllowOverride All|g' /etc/apache2/apache2.conf
+
+# Determine the correct DocumentRoot
+# If your project has a 'public' folder inside /var/www (from Dockerfile COPY), use that.
+# If your project's index.php is in the root, adjust accordingly.
 DOCROOT="/var/www/public"
 
-# Create default content if directory is empty (for testing)
-if [ ! -f "$DOCROOT/index.php" ] && [ ! -f "$DOCROOT/index.html" ]; then
-    echo "WARNING: No index file found in $DOCROOT. Creating a default phpinfo page."
-    mkdir -p "$DOCROOT"
-    echo "<?php phpinfo(); ?>" > "$DOCROOT/index.php"
+# If you prefer /var/www/html/public (as you wrote), uncomment next line:
+# DOCROOT="/var/www/html/public"
+
+sed -i "s|/var/www/html|${DOCROOT}|g" /etc/apache2/sites-available/000-default.conf
+
+# --- Ensure the directory exists and has content ---
+mkdir -p "${DOCROOT}"
+if [ ! -f "${DOCROOT}/index.php" ] && [ ! -f "${DOCROOT}/index.html" ]; then
+    echo "Creating default index.php for testing"
+    echo "<?php phpinfo(); ?>" > "${DOCROOT}/index.php"
 fi
 
-# Ensure DocumentRoot is set correctly (in case build-time sed failed)
-sed -i "s#/var/www/html#$DOCROOT#" /etc/apache2/sites-available/000-default.conf
+# --- Fix ownership and permissions ---
+chown -R www-data:www-data "${DOCROOT}"
+chmod -R 755 "${DOCROOT}"
 
-# Add explicit directory permissions for the new DocumentRoot
+# --- Explicitly allow access in Apache config ---
 cat > /etc/apache2/conf-available/docroot-permissions.conf <<EOF
-<Directory $DOCROOT>
+<Directory ${DOCROOT}>
     Options Indexes FollowSymLinks
     AllowOverride All
     Require all granted
 </Directory>
 EOF
 a2enconf docroot-permissions
-
-# Fix filesystem ownership and permissions
-chown -R www-data:www-data "$DOCROOT"
-chmod -R 755 "$DOCROOT"
 
 # --- Start Apache ---
 echo "Starting Apache on port ${PORT}..."
