@@ -1,38 +1,39 @@
-FROM php:apache
+# Gebaseerd op PHP 8.2 met Apache
+FROM php:8.2-apache
 
-# Cache bust (handig om oude lagen te vermijden bij herhaald bouwen)
-RUN echo "Cache bust: 1"
+# Installeer de PDO MySQL extensie
+RUN docker-php-ext-install pdo pdo_mysql
 
-# Systeemafhankelijkheden
-RUN apt-get update && apt-get install -y git unzip
+# Zet de werkdirectory
+WORKDIR /var/www
 
-# PHP-extensies
-RUN docker-php-ext-install pdo_mysql
+# Kopieer alle bestanden van de lokale projectmap naar de container
+COPY . .
 
-## MPM-configuratie: schakel alleen de ongewenste MPM's uit, zet de juiste aan
-#RUN a2dismod mpm_event || true
-#RUN a2dismod mpm_worker || true
-#RUN a2enmod mpm_prefork rewrite
+# Stel de DocumentRoot in op /var/www/public
+RUN sed -i 's#/var/www/html#/var/www/public#' /etc/apache2/sites-available/000-default.conf
 
-# Pas Apache-configuratie aan: AllowOverride All
-RUN sed -i 's|AllowOverride None|AllowOverride All|g' /etc/apache2/apache2.conf
+# Sta .htaccess overschrijvingen toe
+RUN sed -i 's/AllowOverride None/AllowOverride All/g' /etc/apache2/apache2.conf
 
-# Verander de document root naar /var/www/html/public
-RUN sed -i 's|/var/www/html|/var/www/html/public|g' /etc/apache2/sites-available/000-default.conf
+# Schakel mod_rewrite in
+RUN a2enmod rewrite
 
-# Werkdirectory
-WORKDIR /var/www/html
+# Railway geeft een dynamische poort via de $PORT variabele.
+# Apache luistert standaard op poort 80, maar we moeten overschakelen naar $PORT.
+RUN sed -i "s/Listen 80/Listen \${PORT}/" /etc/apache2/ports.conf && \
+    echo "ServerName localhost:\${PORT}" >> /etc/apache2/apache2.conf
 
-# Kopieer de hele applicatie
-COPY . /var/www/html
+# Stel environment variabelen in voor database connectie (pas aan naar jouw wensen)
+# Railway vult MYSQL_URL, MYSQLHOST, MYSQLPORT, MYSQLDATABASE, MYSQLUSER, MYSQLPASSWORD
+ENV DB_HOST=${MYSQLHOST} \
+    DB_PORT=${MYSQLPORT} \
+    DB_USER=${MYSQLUSER} \
+    DB_PASSWORD=${MYSQLPASSWORD} \
+    DB_NAME=${MYSQLDATABASE}
 
-# Installeer Composer en voer installatie uit (alleen productie-afhankelijkheden)
-COPY --from=composer:latest /usr/bin/composer /usr/bin/composer
-RUN composer install --no-dev --optimize-autoloader
+# Exposeer de poort (Railway gebruikt automatisch $PORT, maar EXPOSE is voor documentatie)
+EXPOSE 80
 
-# Zet de juiste permissies voor Apache (www-data)
-RUN chown -R www-data:www-data /var/www/html \
-    && chmod -R 755 /var/www/html \
-    && mkdir -p /var/www/html/database \
-    && chown -R www-data:www-data /var/www/html/database \
-    && chmod -R 775 /var/www/html/database
+# Start Apache op de voorgrond (default CMD van de base image)
+CMD ["apache2-foreground"]
