@@ -14,6 +14,8 @@ COPY . .
 COPY docker-entrypoint.sh /usr/local/bin/
 RUN chmod +x /usr/local/bin/docker-entrypoint.sh
 
+RUN sed -i 's#/var/www/html#/var/www/public#' /etc/apache2/sites-available/000-default.conf
+
 # --- Configure the container to use the new entrypoint ---
 ENTRYPOINT ["/usr/local/bin/docker-entrypoint.sh"]
 

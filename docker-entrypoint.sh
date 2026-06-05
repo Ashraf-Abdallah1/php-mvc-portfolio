@@ -18,6 +18,11 @@ a2enmod mpm_prefork
 # Example: Set the correct DocumentRoot if needed.
 # sed -i 's#/var/www/html#/var/www/public#' /etc/apache2/sites-available/000-default.conf
 
+PORT=${PORT:-8080}
+echo "Setting Apache to listen on port ${PORT}..."
+sed -i "s/Listen 80/Listen ${PORT}/" /etc/apache2/ports.conf
+echo "ServerName localhost:${PORT}" >> /etc/apache2/apache2.conf
+
 # --- Start Apache ---
 echo "Starting Apache..."
 exec apache2-foreground
