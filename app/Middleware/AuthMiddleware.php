@@ -21,6 +21,7 @@ class AuthMiddleware
     public function handle(Request $request, callable $next): Response
     {
         $publicRoutes = [
+            '/',
             '/login',
             '/register'
         ];
