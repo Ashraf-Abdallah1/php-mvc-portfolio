@@ -19,11 +19,10 @@ class BlogController
     private bool $isAdmin = false;
 
     public function __construct(
-        ResponseFactory         $responseFactory,
+        ResponseFactory $responseFactory,
         BlogRepositoryInterface $blogRepository,
-        AuthService             $authService,
-    )
-    {
+        AuthService $authService,
+    ) {
         $this->responseFactory = $responseFactory;
         $this->blogRepository = $blogRepository;
         $this->authService = $authService;

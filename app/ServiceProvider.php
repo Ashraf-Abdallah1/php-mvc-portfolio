@@ -59,7 +59,7 @@ class ServiceProvider implements ServiceProviderInterface
         $blogRepository = new BlogRepository($database);
         $container->set(BlogRepositoryInterface::class, $blogRepository);
 
-        $homeController = new HomeController($responseFactory);
+        $homeController = new HomeController($responseFactory, $authService);
         $container->set(HomeController::class, $homeController);
 
         $userController = new UserController($responseFactory, $userRepository, $authService);

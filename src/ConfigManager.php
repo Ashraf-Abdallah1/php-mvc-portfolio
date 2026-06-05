@@ -23,14 +23,22 @@ class ConfigManager
     }
 
     /**
+     * @param string $key
+     * @return string
      * @throws Exception
      */
     public function get(string $key): string
     {
-        if (!isset($this->config[$key])) {
-            throw new Exception('Config item: ' . $key . ' not set');
+        $env = getenv($key);
+        if ($env !== false) {
+            return $env;
         }
-        return $this->config[$key];
+
+        if (isset($this->config[$key])) {
+            return $this->config[$key];
+        }
+
+        throw new Exception("Config item: $key not set");
     }
 
     /**

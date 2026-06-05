@@ -14,7 +14,7 @@ class EnvLoader
     public static function load(string $file): array
     {
         if (!file_exists($file)) {
-            throw new Exception(".env file not found: $file");
+            return [];
         }
 
         $lines = file($file, FILE_IGNORE_NEW_LINES | FILE_SKIP_EMPTY_LINES) ?: [];

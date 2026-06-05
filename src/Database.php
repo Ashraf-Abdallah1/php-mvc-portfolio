@@ -3,6 +3,7 @@
 namespace Framework;
 
 use PDO;
+use PDOException;
 use PDOStatement;
 
 class Database
@@ -13,14 +14,21 @@ class Database
         string $host,
         string $db,
         string $user,
-        string $pass
+        string $pass,
+        int $port = 3306
     ) {
-        $dsn = "mysql:host=$host;dbname=$db;charset=utf8mb4";
+        try {
+            $dsn = "mysql:host=$host;port=$port;dbname=$db;charset=utf8mb4";
 
-        $this->connection = new PDO($dsn, $user, $pass);
-
-        $this->connection->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
-        $this->connection->setAttribute(PDO::ATTR_DEFAULT_FETCH_MODE, PDO::FETCH_OBJ);
+            $this->connection = new PDO($dsn, $user, $pass, [
+                PDO::ATTR_ERRMODE => PDO::ERRMODE_EXCEPTION,
+                PDO::ATTR_DEFAULT_FETCH_MODE => PDO::FETCH_OBJ
+            ]);
+        } catch (PDOException $e) {
+            error_log("DB ERROR: " . $e->getMessage());
+            http_response_code(500);
+            die("Database connection failed");
+        }
     }
 
     public function query(string $query): PDOStatement|false
@@ -30,7 +38,7 @@ class Database
 
     /**
      * @param string $sql
-     * @param mixed[]|null $params
+     * @param array<string>|null $params
      * @return PDOStatement
      */
     public function run(string $sql, array|null $params = null): PDOStatement
