@@ -22,9 +22,6 @@ async function loadBlogs() {
             return;
         }
 
-        // -------------------------------
-        // DATA VOOR DE CHART VERZAMELEN
-        // -------------------------------
         const titles = [];
         const wordCounts = [];
 
@@ -32,7 +29,6 @@ async function loadBlogs() {
 
             const readingTime = calculateReadingTime(blog.content);
 
-            // Chart data vullen
             titles.push(blog.title);
             wordCounts.push(blog.content.trim().split(/\s+/).length);
 
@@ -78,9 +74,6 @@ async function loadBlogs() {
             container.innerHTML += card;
         });
 
-        // -------------------------------
-        // CHART TEKENEN (NIEUWE INNOVATIE)
-        // -------------------------------
         drawBlogChart(titles, wordCounts);
 
     } catch (error) {
@@ -92,9 +85,6 @@ async function loadBlogs() {
     }
 }
 
-// -------------------------------
-// FUNCTIE OM DE CHART TE TEKENEN
-// -------------------------------
 function drawBlogChart(titles, wordCounts) {
     const ctx = document.getElementById('blogChart');
 
