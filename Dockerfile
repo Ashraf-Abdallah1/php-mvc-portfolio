@@ -9,10 +9,10 @@ RUN apt-get update && apt-get install -y git unzip
 # PHP-extensies
 RUN docker-php-ext-install pdo_mysql
 
-# MPM-configuratie: schakel alleen de ongewenste MPM's uit, zet de juiste aan
-RUN a2dismod mpm_event || true
-RUN a2dismod mpm_worker || true
-RUN a2enmod mpm_prefork rewrite
+## MPM-configuratie: schakel alleen de ongewenste MPM's uit, zet de juiste aan
+#RUN a2dismod mpm_event || true
+#RUN a2dismod mpm_worker || true
+#RUN a2enmod mpm_prefork rewrite
 
 # Pas Apache-configuratie aan: AllowOverride All
 RUN sed -i 's|AllowOverride None|AllowOverride All|g' /etc/apache2/apache2.conf
