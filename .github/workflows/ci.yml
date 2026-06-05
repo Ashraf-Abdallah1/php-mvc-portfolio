@@ -26,5 +26,8 @@ jobs:
       - name: PHPCS
         run: vendor/bin/phpcs
 
+      - name: Deptrac
+        run: vendor/bin/deptrac --ansi
+
       - name: PHPUnit
         run: ./vendor/bin/phpunit --testdox --colors=always --coverage-text tests
