@@ -1,0 +1,76 @@
+{% extends "dashboard/base.html.twig" %}
+{% block content %}
+    <div class="container mt-5" style="max-width: 1000px;">
+
+        <h2 class="fw-bold text-success mb-4">Dashboard</h2>
+        {% if isAdmin %}
+            <div class="d-flex justify-content-center mb-4">
+                <a href="/dashboard/edit"
+                   class="btn btn-success px-4 py-2 shadow-sm d-flex align-items-center gap-2 rounded-3">
+                    <i class="bi bi-pencil-square"></i>
+                    Dashboard Aanpassen
+                </a>
+            </div>
+        {% endif %}
+
+        <div class="card shadow-lg border-0 rounded-4 mb-4">
+            <div class="card-body p-4">
+
+                <h4 class="fw-bold text-success d-flex align-items-center gap-2">
+                    <i class="bi bi-mortarboard"></i> Studiepunten
+                </h4>
+
+                <p class="text-muted mb-1">
+                    Behaalde punten:
+                    <span class="fw-bold text-success">{{ dashboard.earnedCredits }}</span>
+                </p>
+
+                <p class="text-muted mb-1">
+                    Totaal punten:
+                    <span class="fw-bold">{{ dashboard.totalCredits }}</span>
+                </p>
+
+                <div class="progress mt-3" style="height: 22px;">
+                    <div class="progress-bar bg-success fw-bold"
+                         role="progressbar"
+                         style="width: {{ dashboard.progressPercentage }}%;">
+                        {{ dashboard.progressPercentage|number_format(1) }}%
+                    </div>
+                </div>
+
+            </div>
+        </div>
+
+        <div class="card shadow-lg border-0 rounded-4">
+            <div class="card-body p-4">
+
+                <h4 class="fw-bold text-success d-flex align-items-center gap-2">
+                    <i class="bi bi-bar-chart"></i> Cijfers
+                </h4>
+
+                <table class="table mt-3">
+                    <thead class="table-success">
+                    <tr>
+                        <th>Vak</th>
+                        <th>Cijfer</th>
+                    </tr>
+                    </thead>
+                    <tbody>
+                    {% for course, grade in dashboard.grades %}
+                        <tr>
+                            <td class="fw-semibold">{{ course|e }}</td>
+                            <td>
+                                <span class="badge bg-success bg-opacity-25 text-success px-3 py-2 rounded-pill shadow-sm">
+                                    {{ grade }}
+                                </span>
+                            </td>
+                        </tr>
+                    {% endfor %}
+                    </tbody>
+                </table>
+
+            </div>
+        </div>
+
+    </div>
+{% endblock %}

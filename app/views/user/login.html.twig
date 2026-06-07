@@ -1,40 +1,64 @@
 {% extends 'user/partials.html.twig' %}
-{% set pageTitle = "Login" %}
-
 {% block formContent %}
-    <form method="POST" action="/login">
 
-        <div class="mb-3">
-            <label for="username" class="form-label">Username</label>
-            <input type="text"
-                   class="form-control"
-                   id="username"
-                   name="username"
-                   placeholder="unique"
-                   value="{{ old.username ?? '' }}"
-                   required>
-            {% if errors.username %}
-                <div class="text-danger small mt-1">{{ errors.username }}</div>
-            {% endif %}
-        </div>
+    <div class="p-5 bg-white shadow rounded-4 border-start border-4 border-success mx-auto"
+         style="max-width: 400px; width: 75%;">
 
-        <div class="mb-3">
-            <label for="password" class="form-label">Password</label>
-            <input type="password"
-                   class="form-control"
-                   id="password"
-                   name="password"
-                   placeholder="password"
-                   required>
-            {% if errors.password %}
-                <div class="text-danger small mt-1">{{ errors.password }}</div>
-            {% endif %}
-        </div>
+        <h2 class="fw-bold text-success text-center mb-4">Inloggen</h2>
 
-        <button type="submit" class="btn btn-primary w-100">Log in</button>
+        <form method="POST" action="/login">
 
-        <p class="text-center mt-3">
-            <a href="/register" class="text-decoration-none">Geen account? Register hier</a>
-        </p>
-    </form>
+            <div class="mb-3">
+                <label for="username" class="form-label fw-semibold text-success">Username</label>
+                <input type="text"
+                       class="form-control border-success shadow-sm"
+                       id="username"
+                       name="username"
+                       placeholder="unique"
+                       value="{{ old.username ?? '' }}"
+                       required>
+
+
+            </div>
+
+            <div class="mb-3">
+                <label for="password" class="form-label fw-semibold text-success">Password</label>
+                <input type="password"
+                       class="form-control border-success shadow-sm"
+                       id="password"
+                       name="password"
+                       placeholder="password"
+                       required>
+
+                {% if errors.username %}
+                    <div class="text-danger small mt-1">{{ errors.username|e }}</div>
+                {% endif %}
+                {% if errors.username or errors.password %}
+                    <div class="text-danger small mt-1">{{ errors.password|e }}</div>
+                {% endif %}
+            </div>
+            <button type="submit"
+                    class="btn btn-success w-100 py-2 shadow-sm fw-semibold rounded-pill">
+                Log in
+            </button>
+
+            <p class="text-center mt-3">
+                <a href="/register" class="text-success fw-semibold text-decoration-none">
+                    Geen account? Registreer hier
+                </a>
+            </p>
+        </form>
+
+        <form method="POST" action="/guest">
+            <p class="text-center mt-3">
+                <button type="submit"
+                        class="btn btn-link text-success fw-semibold text-decoration-none p-0">
+                    Geen account? Doorgaan als gast
+                </button>
+            </p>
+        </form>
+
+
+    </div>
+
 {% endblock %}

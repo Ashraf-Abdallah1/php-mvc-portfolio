@@ -18,11 +18,10 @@ class UserController
     private AuthService $authService;
 
     public function __construct(
-        ResponseFactory         $response,
+        ResponseFactory $response,
         UserRepositoryInterface $userRepository,
-        AuthService             $authService,
-    )
-    {
+        AuthService $authService,
+    ) {
         $this->response = $response;
         $this->userRepository = $userRepository;
         $this->authService = $authService;
@@ -38,6 +37,7 @@ class UserController
         $user = new User();
         $username = (string)$request->get('username');
         $password = (string)$request->get('password');
+        $name = (string)$request->get('name');
 
         $errors = $this->checkInputs($username, $password);
 
@@ -45,7 +45,8 @@ class UserController
             return $this->response->view('user/register.html.twig', [
                 'errors' => $errors,
                 'old' => [
-                    'username' => $username
+                    'username' => $username,
+                    'name' => $name,
                 ]
             ]);
         }
@@ -80,6 +81,18 @@ class UserController
         ]);
     }
 
+    public function loginGuest(Request $request): Response
+    {
+        $output = $this->authService->login("guest", "guest");
+        return $this->response->redirect('/');
+    }
+
+    public function logout(Request $request): Response
+    {
+        $this->authService->logout();
+        return $this->response->redirect('/login');
+    }
+
     /**
      * @param string $username
      * @param string $password
@@ -97,8 +110,29 @@ class UserController
             $errors['username'] = "Username bevat onbekende tekens";
         }
 
+
         if (empty($password)) {
             $errors['password'] = "Password is verplicht";
+        } else {
+            if (strlen($password) < 8) {
+                $errors['password'] = "Password moet minimaal 8 tekens bevatten";
+            }
+
+            if (!preg_match('/[A-Z]/', $password)) {
+                $errors['password'] = "Password moet minstens één hoofdletter bevatten";
+            }
+
+            if (!preg_match('/[a-z]/', $password)) {
+                $errors['password'] = "Password moet minstens één kleine letter bevatten";
+            }
+
+            if (!preg_match('/[0-9]/', $password)) {
+                $errors['password'] = "Password moet minstens één cijfer bevatten";
+            }
+
+            if (!preg_match('/[\W]/', $password)) {
+                $errors['password'] = "Password moet minstens één speciaal teken bevatten";
+            }
         }
 
         $users = $this->userRepository->all();

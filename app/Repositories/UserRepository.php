@@ -4,6 +4,7 @@ namespace App\Repositories;
 
 use App\Models\User;
 use Framework\Database;
+use RuntimeException;
 
 class UserRepository implements UserRepositoryInterface
 {
@@ -16,12 +17,17 @@ class UserRepository implements UserRepositoryInterface
 
     public function all(): array
     {
-        $stmt = $this->database->run("SELECT * FROM Users")->fetchAll();
         $users = [];
-        foreach ($stmt as $user) {
+
+        $stmt = $this->database->prepare("SELECT * FROM Users");
+        $stmt->execute();
+        $rows = $stmt->fetchAll();
+
+        foreach ($rows as $user) {
             $rowUser = $this->fromDbRow($user);
             $users[] = $rowUser;
         }
+
         return $users;
     }
 
@@ -32,26 +38,41 @@ class UserRepository implements UserRepositoryInterface
 
     public function findByUsername(string $username): ?User
     {
-        $stmt = $this->database->run("SELECT * FROM Users WHERE username = :username", ["username" => $username])->fetch();
+        $stmt = $this->database->prepare(
+            "SELECT * FROM Users WHERE username = :username"
+        );
 
-        if ($stmt === false) {
+        $stmt->execute([
+            "username" => $username
+        ]);
+
+        $row = $stmt->fetch();
+
+        if ($row === false) {
             return null;
         }
 
-        return $this->fromDbRow($stmt);
+        return $this->fromDbRow($row);
     }
 
     public function insert(User $user): User
     {
-        $stmt = $this->database->run(
-            "INSERT INTO Users (name, username, password) VALUES (:name, :username, :password)",
-            [
-                "name" => $user->getName(),
-                "username" => $user->getUsername(),
-                "password" => $user->getPassword(),
-            ]
+        $stmt = $this->database->prepare(
+            "INSERT INTO Users (name, username, password, role)
+             VALUES (:name, :username, :password, :role)"
         );
-        return new User();
+
+        $stmt->execute([
+            "name" => $user->getName(),
+            "username" => $user->getUsername(),
+            "password" => $user->getPassword(),
+            "role" => $user->getRole(),
+        ]);
+
+        $id = $this->database->getLastID();
+        $user->setId($id);
+
+        return $user;
     }
 
     public function update(User $user): User
@@ -61,11 +82,17 @@ class UserRepository implements UserRepositoryInterface
 
     public function fromDbRow(mixed $row): User
     {
+        if ($row === null) {
+            throw new RuntimeException("Invalid DB row for User");
+        }
+
         $user = new User();
         $user->setName($row->name);
         $user->setUsername($row->username);
         $user->setPassword($row->password);
         $user->setId($row->id);
+        $user->setRole($row->role ?? 'user');
+
         return $user;
     }
 }

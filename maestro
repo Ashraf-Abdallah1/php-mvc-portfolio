@@ -33,3 +33,11 @@ if ($argv[1] === 'phpcs') {
 if ($argv[1] === 'deptrac') {
     passthru('php vendor/bin/deptrac --ansi');
 }
+
+if ($argv[1] === 'phpunit') {
+    passthru('php vendor/bin/phpunit --testdox');
+}
+
+if ($argv[1] === 'coverage') {
+    passthru('php vendor\bin\phpunit --coverage-text');
+}

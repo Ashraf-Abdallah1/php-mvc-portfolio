@@ -1,0 +1,90 @@
+{% extends "partials/base.html.twig" %}
+
+{% block body %}
+
+    <div class="container mt-5" style="max-width: 900px;">
+        <a href="/blogs" class="btn btn-outline-success px-4 shadow-sm mb-4">
+            <i class="bi bi-arrow-left"></i> Terug
+        </a>
+
+        <div id="blog-detail">
+            <div class="text-center text-secondary">Blog wordt geladen...</div>
+        </div>
+    </div>
+
+    <div id="id" class="d-none">{{ id }}</div>
+    <div id="isAdmin" class="d-none">{{ isAdmin ? '1' : '0' }}</div>
+
+    <script>
+        async function loadBlog() {
+            const id = document.getElementById('id').textContent.trim();
+            const isAdmin = document.getElementById('isAdmin').textContent.trim() === '1';
+
+            try {
+                const response = await fetch(`/api/blogs/${id}`);
+                const json = await response.json();
+                const blog = json.data;
+
+                const container = document.getElementById('blog-detail');
+
+                container.innerHTML = `
+                <div class="card shadow-lg border-0 rounded-4">
+                    <div class="card-body p-4">
+
+                        <div class="d-flex align-items-center mb-4">
+                            <div class="rounded-circle bg-success bg-opacity-10 d-flex justify-content-center align-items-center"
+                                 style="width: 70px; height: 70px;">
+                                <i class="bi bi-journal-text text-success" style="font-size: 2rem;"></i>
+                            </div>
+
+                            <div class="ms-3">
+                                <h4 class="fw-bold mb-0">${blog.title}</h4>
+                                <span class="text-muted">Datum: ${new Date(blog.date * 1000).toLocaleString()}</span>
+                            </div>
+                        </div>
+
+                        <hr>
+
+                        <div class="mb-4">
+                            <h6 class="text-dark fw-semibold mb-2">Content</h6>
+                            <p class="text-muted fs-6">${blog.content}</p>
+                        </div>
+
+                        <hr>
+
+                        ${isAdmin ? `
+                        <div class="d-flex justify-content-end gap-3 mt-4">
+
+                            <form action="/blogs/${blog.id}/edit" method="POST">
+                                <button type="submit" class="btn btn-success px-4 shadow-sm">
+                                    <i class="bi bi-pencil"></i> Bewerken
+                                </button>
+                            </form>
+
+                            <form action="/blogs/${blog.id}/deleteConfirm" method="POST">
+                                <button type="submit" class="btn btn-danger px-4 shadow-sm">
+                                    <i class="bi bi-trash"></i> Verwijderen
+                                </button>
+                            </form>
+
+                        </div>
+                        ` : ''}
+
+                    </div>
+                </div>
+            `;
+
+            } catch (error) {
+                document.getElementById('blog-detail').innerHTML = `
+                <div class="alert alert-danger shadow-sm border-0">
+                    Fout bij het laden van de blog.
+                </div>
+            `;
+                console.error(error);
+            }
+        }
+
+        loadBlog();
+    </script>
+
+{% endblock %}

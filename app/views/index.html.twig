@@ -1,4 +1,64 @@
-{%extends 'partials/base.html.twig' %}
+{% extends 'partials/base.html.twig' %}
+
 {% block body %}
-    <h1>Welcome</h1>
+
+    <div class="min-vh-100 d-flex flex-column"
+         style="background: linear-gradient(135deg, #e9f7ef, #d4f0e0);">
+
+        <main class="container flex-grow-1 py-5">
+
+            <div class="text-center mb-5">
+                <h1 class="fw-bold text-success">Welkom op mijn portfolio</h1>
+                <p class="text-secondary fs-5">Dit is mijn persoonlijke website</p>
+            </div>
+
+            <div class="row justify-content-center g-4">
+
+                <div class="col-lg-8">
+                    <div class="p-4 bg-white shadow rounded-4 border-start border-4 border-success">
+                        <p class="mb-0 text-secondary lh-lg">
+                            Ik heb altijd al veel interesse gehad in ICT.
+                            Dingen zoals hoe software precies werkt en hoe je met code iets kunt maken dat anderen ook
+                            echt kunnen gebruiken,
+                            hebben me altijd nieuwsgierig gemaakt.
+                            Tijdens mijn MBO-opleiding Software Development bij Scalda merkte ik dat programmeren en het
+                            bouwen van websites echt goed bij mij passen.
+                            Ik vond het leuk om oplossingen te bedenken en om te zien dat wat je maakt ook echt werkt.
+                            Na mijn diploma wilde ik niet stoppen, maar juist verder leren.
+                            Daarom kies ik ervoor om door te stromen naar het hbo bij de HZ.
+                            Daar kan ik mijn kennis verder verdiepen, meer praktijkervaring opdoen en beter worden in
+                            mijn vak.
+                            Daarnaast zie ik dat de wereld steeds meer richting automatisering en nieuwe technologieën
+                            gaat.
+                            Dat vind ik interessant en ik wil begrijpen hoe dat allemaal werkt en hoe ik daar zelf een
+                            rol in kan spelen.
+                            Met de projecten die ik al gedaan heb weet ik dat ik op de goede weg zit.
+                            Bekijk mijn projecten op LinkedIn:
+                            <a href="https://www.linkedin.com/in/mohamad-ashraf-abdallah/"
+                               target="_blank"
+                               class="fw-semibold text-success">
+                                klik hier
+                            </a>.
+                        </p>
+                    </div>
+                </div>
+
+                <div class="col-lg-8">
+                    <div class="p-4 bg-white shadow rounded-4 text-center border-start border-4 border-success">
+                        <p class="mb-0 text-secondary fs-5">
+                            Hoe meer kennis en ervaring je opdoet, hoe gemakkelijker het wordt.
+                        </p>
+                    </div>
+                </div>
+
+            </div>
+
+        </main>
+
+        <footer class="py-3 text-center text-secondary">
+            © {{ "now"|date("Y") }} Mohamad Ashraf Abdallah
+        </footer>
+
+    </div>
+
 {% endblock %}

@@ -1,0 +1,66 @@
+{% extends "blog/base.html.twig" %}
+
+{% block body %}
+
+    <div class="container mt-5" style="max-width: 800px;">
+
+        <div class="d-flex justify-content-between align-items-center mb-4">
+            <div>
+                <h2 class="fw-bold text-success mb-0">Blog Bewerken</h2>
+                <p class="text-muted mt-1">Pas de gegevens van het Blog aan</p>
+            </div>
+
+            <a href="/blogs/{{ blog.id }}" class="btn btn-outline-success px-4 shadow-sm">
+                <i class="bi bi-arrow-left"></i> Terug
+            </a>
+        </div>
+
+        <div class="card shadow-lg border-0 rounded-4">
+            <div class="card-body p-4">
+
+                <form method="POST" action="/blogs/{{ blog.id }}">
+
+                    <div class="mb-4">
+                        <label class="form-label fw-semibold">Blog title</label>
+                        <input
+                                type="text"
+                                name="title"
+                                class="form-control border-success shadow-sm"
+                                value="{{ blog.title|e}}"
+                                required
+                        >
+                        {% if errors.title|e %}
+                            <div class="text-danger small mt-1">"{{ oldBlog.title|e }}" {{ errors.title|e }}</div>
+                        {% endif %}
+                    </div>
+
+                    <div class="mb-4">
+                        <label class="form-label fw-semibold">Content</label>
+                        <textarea
+                                name="content"
+                                class="form-control border-success shadow-sm"
+                                rows="5"
+                                required
+                        >{{ blog.content ?? oldBlog.content }}</textarea>
+                    </div>
+
+                    <div class="d-flex justify-content-between mt-4">
+
+                        <a href="/blogs/{{ blog.id }}" class="btn btn-outline-danger px-4">
+                            Annuleren
+                        </a>
+
+                        <button type="submit" class="btn btn-success px-4 shadow-sm">
+                            <i class="bi bi-check-lg"></i> Opslaan
+                        </button>
+
+                    </div>
+
+                </form>
+
+            </div>
+        </div>
+
+    </div>
+
+{% endblock %}
