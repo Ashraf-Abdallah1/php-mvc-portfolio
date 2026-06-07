@@ -22,7 +22,7 @@ class ProfileControllerTest extends TestCase
 
     private AuthService&MockObject $auth;
 
-    private ProfileController $controller;
+    private ProfileController $profileController;
 
     protected function setUp(): void
     {
@@ -32,7 +32,7 @@ class ProfileControllerTest extends TestCase
         $this->responseFactory = $this->createMock(ResponseFactory::class);
         $this->auth = $this->createMock(AuthService::class);
 
-        $this->controller = new ProfileController(
+        $this->profileController = new ProfileController(
             $this->responseFactory,
             $this->profileRepository,
             $this->auth
@@ -67,7 +67,7 @@ class ProfileControllerTest extends TestCase
             ])
             ->willReturn($expectedResponse);
 
-        $response = $this->controller->index();
+        $response = $this->profileController->index();
 
         $this->assertSame($expectedResponse, $response);
     }
@@ -99,7 +99,7 @@ class ProfileControllerTest extends TestCase
             ])
             ->willReturn($expectedResponse);
 
-        $response = $this->controller->edit();
+        $response = $this->profileController->edit();
 
         $this->assertSame($expectedResponse, $response);
     }
@@ -135,7 +135,7 @@ class ProfileControllerTest extends TestCase
             ->with('/profile')
             ->willReturn($expectedResponse);
 
-        $response = $this->controller->update($request);
+        $response = $this->profileController->update($request);
 
         $this->assertSame($expectedResponse, $response);
     }

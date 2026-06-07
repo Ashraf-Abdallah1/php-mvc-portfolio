@@ -18,32 +18,30 @@ class UserFlowTest extends TestCase
     private Session $session;
     private UserController $UserController;
     private AuthMiddleware $authMiddleware;
-    private DummyDatabase $db;
-
-    private ResponseFactory $responseFactory;
+    private DummyDatabase $database;
 
     protected function setUp(): void
     {
-        $this->db = new DummyDatabase();
+        $this->database = new DummyDatabase();
 
 
         $this->session = new Session();
 
-        $userRepository = new DummyUserRepository($this->db);
+        $userRepository = new DummyUserRepository($this->database);
 
         $authService = new AuthService($userRepository, $this->session);
 
-        $this->responseFactory = new ResponseFactory(false, "app/views");
+        $responseFactory = new ResponseFactory(false, "app/views");
 
         $this->UserController = new UserController(
-            $this->responseFactory,
+            $responseFactory,
             $userRepository,
             $authService
         );
 
         $this->authMiddleware = new AuthMiddleware(
             $authService,
-            $this->responseFactory,
+            $responseFactory,
         );
     }
 
@@ -60,7 +58,7 @@ class UserFlowTest extends TestCase
 
         $this->assertEquals('Location: /', $registerResponse->header);
 
-        $users = $this->db->allUsers();
+        $users = $this->database->allUsers();
         $this->assertCount(1, $users);
 
         $user = $users[0];

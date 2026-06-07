@@ -20,7 +20,6 @@ class ProfileFlowTest extends TestCase
     private ProfileController $profileController;
     private AdminMiddleware $adminMiddleware;
     private DummyProfileRepository $profileRepository;
-    private ResponseFactory $responseFactory;
 
     protected function setUp(): void
     {
@@ -30,19 +29,19 @@ class ProfileFlowTest extends TestCase
         $userRepository = new DummyUserRepository($db);
         $auth = new AuthService($userRepository, $this->session);
 
-        $this->responseFactory = new ResponseFactory(false, "app/views");
+        $responseFactory = new ResponseFactory(false, "app/views");
 
         $this->profileRepository = new DummyProfileRepository();
 
         $this->profileController = new ProfileController(
-            $this->responseFactory,
+            $responseFactory,
             $this->profileRepository,
             $auth
         );
 
         $this->adminMiddleware = new AdminMiddleware(
             $auth,
-            $this->responseFactory
+            $responseFactory
         );
     }
 
@@ -50,12 +49,12 @@ class ProfileFlowTest extends TestCase
     {
         $request = new Request('GET', '/profile/edit', [], []);
 
-        //  ingelogd -> User →
+        //  ingelogd  user
         $this->session->set('role', 'user');
         $response = $this->adminMiddleware->handle($request, fn() => new Response("Niet ingelogd"));
         $this->assertStringContainsString("403", $response->body);
 
-        // Admin → mag door
+        // Admin  mag door
         $this->session->set('role', 'admin');
         $response = $this->adminMiddleware->handle($request, fn() => $this->profileController->edit());
         $this->assertStringContainsString("form", $response->body);
@@ -70,12 +69,12 @@ class ProfileFlowTest extends TestCase
             '/profile/1',
             [],
             [
-                'name' => 'New Name',
-                'bio' => 'New Bio',
+                'name' => 'Ashraf',
+                'bio' => 'Bio',
                 'skills' => 'PHP, JS',
-                'experience' => '3 years',
-                'projects' => 'Project X',
-                'contact' => 'new@example.com'
+                'experience' => '1 year',
+                'projects' => 'Project education game',
+                'contact' => '0002abda@hz.nl'
             ]
         );
 
@@ -83,13 +82,12 @@ class ProfileFlowTest extends TestCase
 
         $this->assertEquals('Location: /profile', $response->header);
 
-        $this->assertEquals('New Name', $this->profileRepository->savedProfile->getName());
-        $this->assertEquals('New Bio', $this->profileRepository->savedProfile->getBio());
+        $this->assertEquals('Ashraf', $this->profileRepository->savedProfile->getName());
+        $this->assertEquals('Bio', $this->profileRepository->savedProfile->getBio());
     }
 
     public function testProfileIndexAccessibleForAll(): void
     {
-        $request = new Request('GET', '/profile', [], []);
         $response = $this->profileController->index();
 
         $this->assertStringContainsString("Test User", $response->body);

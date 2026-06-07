@@ -19,31 +19,29 @@ class AdminDashboardFlowTest extends TestCase
     private Session $session;
     private DashboardController $dashboardController;
     private AdminMiddleware $adminMiddleware;
-    private DummyDatabase $db;
-    private ResponseFactory $responseFactory;
 
     protected function setUp(): void
     {
-        $this->db = new DummyDatabase();
+        $db = new DummyDatabase();
         $this->session = new Session();
 
-        $userRepository = new DummyUserRepository($this->db);
+        $userRepository = new DummyUserRepository($db);
         $authService = new AuthService($userRepository, $this->session);
 
-        $this->responseFactory = new ResponseFactory(false, "app/views");
+        $responseFactory = new ResponseFactory(false, "app/views");
 
         $dashboardRepository = new DummyDashboardRepository();
 
 
         $this->dashboardController = new DashboardController(
             $dashboardRepository,
-            $this->responseFactory,
+            $responseFactory,
             $authService
         );
 
         $this->adminMiddleware = new AdminMiddleware(
             $authService,
-            $this->responseFactory
+            $responseFactory
         );
     }
 

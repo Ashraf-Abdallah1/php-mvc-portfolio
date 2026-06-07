@@ -21,7 +21,7 @@ class BlogControllerTest extends TestCase
 
     private AuthService&MockObject $authService;
 
-    private BlogController $controller;
+    private BlogController $blogController;
 
     protected function setUp(): void
     {
@@ -31,7 +31,7 @@ class BlogControllerTest extends TestCase
         $this->responseFactory = $this->createMock(ResponseFactory::class);
         $this->authService = $this->createMock(AuthService::class);
 
-        $this->controller = new BlogController(
+        $this->blogController = new BlogController(
             $this->responseFactory,
             $this->blogRepository,
             $this->authService
@@ -42,7 +42,7 @@ class BlogControllerTest extends TestCase
     {
         $blogs = [
             new Blog(),
-            new Blog()
+            new Blog(),
         ];
 
         $expectedResponse = $this->createMock(Response::class);
@@ -61,7 +61,7 @@ class BlogControllerTest extends TestCase
             ])
             ->willReturn($expectedResponse);
 
-        $response = $this->controller->index();
+        $response = $this->blogController->index();
 
         $this->assertSame($expectedResponse, $response);
     }
@@ -69,6 +69,7 @@ class BlogControllerTest extends TestCase
     public function testShowReturnsViewWithBlog(): void
     {
         $blog = new Blog();
+        $blog->setId(1);
 
         $request = new Request('GET', '/blogs/1', [
             'id' => 1
@@ -93,7 +94,7 @@ class BlogControllerTest extends TestCase
             ])
             ->willReturn($expectedResponse);
 
-        $response = $this->controller->show($request);
+        $response = $this->blogController->show($request);
 
         $this->assertSame($expectedResponse, $response);
     }
@@ -115,7 +116,7 @@ class BlogControllerTest extends TestCase
             ->with('blog/create.html.twig')
             ->willReturn($expectedResponse);
 
-        $response = $this->controller->create($request);
+        $response = $this->blogController->create($request);
 
         $this->assertSame($expectedResponse, $response);
     }
@@ -148,7 +149,7 @@ class BlogControllerTest extends TestCase
             ->with('/blogs')
             ->willReturn($expectedResponse);
 
-        $response = $this->controller->store($request);
+        $response = $this->blogController->store($request);
 
         $this->assertSame($expectedResponse, $response);
     }
@@ -181,7 +182,7 @@ class BlogControllerTest extends TestCase
             )
             ->willReturn($expectedResponse);
 
-        $response = $this->controller->store($request);
+        $response = $this->blogController->store($request);
 
         $this->assertSame($expectedResponse, $response);
     }
@@ -212,7 +213,7 @@ class BlogControllerTest extends TestCase
             ])
             ->willReturn($expectedResponse);
 
-        $response = $this->controller->edit($request);
+        $response = $this->blogController->edit($request);
 
         $this->assertSame($expectedResponse, $response);
     }
@@ -246,7 +247,7 @@ class BlogControllerTest extends TestCase
             ->with('/blogs/1')
             ->willReturn($expectedResponse);
 
-        $response = $this->controller->update($request);
+        $response = $this->blogController->update($request);
 
         $this->assertSame($expectedResponse, $response);
     }
@@ -277,7 +278,7 @@ class BlogControllerTest extends TestCase
             ])
             ->willReturn($expectedResponse);
 
-        $response = $this->controller->deleteConfirm($request);
+        $response = $this->blogController->deleteConfirm($request);
 
         $this->assertSame($expectedResponse, $response);
     }
@@ -301,7 +302,7 @@ class BlogControllerTest extends TestCase
             ->with('/blogs')
             ->willReturn($expectedResponse);
 
-        $response = $this->controller->delete($request);
+        $response = $this->blogController->delete($request);
 
         $this->assertSame($expectedResponse, $response);
     }

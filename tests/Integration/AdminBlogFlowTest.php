@@ -48,9 +48,11 @@ class AdminBlogFlowTest extends TestCase
 
     public function testAdminBlogManagementFlow(): void
     {
-        //  niet ingelogd
+
         $request = new Request('GET', '/blogs/1/edit', [], []);
 
+
+        //  niet ingelogd
         $response = $this->adminMiddleware->handle($request, function () {
             return new Response("Unauthorized");
         });
@@ -68,7 +70,7 @@ class AdminBlogFlowTest extends TestCase
         $this->assertStringContainsString("403", $response->body);
 
 
-        // ingelogd amin
+        // ingelogd admin
         $this->session->set('role', 'admin');
 
         $blog = new Blog();

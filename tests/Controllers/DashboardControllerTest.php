@@ -22,7 +22,7 @@ class DashboardControllerTest extends TestCase
 
     private AuthService&MockObject $authService;
 
-    private DashboardController $controller;
+    private DashboardController $dashboardController;
 
     protected function setUp(): void
     {
@@ -32,14 +32,14 @@ class DashboardControllerTest extends TestCase
         $this->responseFactory = $this->createMock(ResponseFactory::class);
         $this->authService = $this->createMock(AuthService::class);
 
-        $this->controller = new DashboardController(
+        $this->dashboardController = new DashboardController(
             $this->dashboardRepository,
             $this->responseFactory,
             $this->authService
         );
     }
 
-    public function testIndexReturnsViewWithDashboardAndIsAdmin(): void
+    public function testIndexReturnsViewWithDashboard(): void
     {
         $dashboard = $this->createMock(Dashboard::class);
 
@@ -65,7 +65,7 @@ class DashboardControllerTest extends TestCase
             ])
             ->willReturn($expectedResponse);
 
-        $response = $this->controller->index();
+        $response = $this->dashboardController->index();
 
         $this->assertSame($expectedResponse, $response);
     }
@@ -85,7 +85,7 @@ class DashboardControllerTest extends TestCase
             ->with('errors/403')
             ->willReturn($expectedResponse);
 
-        $response = $this->controller->edit();
+        $response = $this->dashboardController->edit();
 
         $this->assertSame($expectedResponse, $response);
     }
@@ -114,7 +114,7 @@ class DashboardControllerTest extends TestCase
             ])
             ->willReturn($expectedResponse);
 
-        $response = $this->controller->edit();
+        $response = $this->dashboardController->edit();
 
         $this->assertSame($expectedResponse, $response);
     }
@@ -139,7 +139,7 @@ class DashboardControllerTest extends TestCase
             ->with('errors/403')
             ->willReturn($expectedResponse);
 
-        $response = $this->controller->updateCredits($request);
+        $response = $this->dashboardController->updateCredits($request);
 
         $this->assertSame($expectedResponse, $response);
     }
@@ -169,7 +169,7 @@ class DashboardControllerTest extends TestCase
             ->with('/dashboard')
             ->willReturn($expectedResponse);
 
-        $response = $this->controller->updateCredits($request);
+        $response = $this->dashboardController->updateCredits($request);
 
         $this->assertSame($expectedResponse, $response);
     }
@@ -194,7 +194,7 @@ class DashboardControllerTest extends TestCase
             ->with('errors/403')
             ->willReturn($expectedResponse);
 
-        $response = $this->controller->updateGrade($request);
+        $response = $this->dashboardController->updateGrade($request);
 
         $this->assertSame($expectedResponse, $response);
     }
@@ -224,7 +224,7 @@ class DashboardControllerTest extends TestCase
             ->with('/dashboard')
             ->willReturn($expectedResponse);
 
-        $response = $this->controller->updateGrade($request);
+        $response = $this->dashboardController->updateGrade($request);
 
         $this->assertSame($expectedResponse, $response);
     }
@@ -249,7 +249,7 @@ class DashboardControllerTest extends TestCase
             ->with('errors/403')
             ->willReturn($expectedResponse);
 
-        $response = $this->controller->addCourse($request);
+        $response = $this->dashboardController->addCourse($request);
 
         $this->assertSame($expectedResponse, $response);
     }
@@ -279,7 +279,7 @@ class DashboardControllerTest extends TestCase
             ->with('/dashboard')
             ->willReturn($expectedResponse);
 
-        $response = $this->controller->addCourse($request);
+        $response = $this->dashboardController->addCourse($request);
 
         $this->assertSame($expectedResponse, $response);
     }
@@ -292,7 +292,6 @@ class DashboardControllerTest extends TestCase
 
         $expectedResponse = $this->createMock(Response::class);
 
-        // deleteCourse does not check isAdmin in controller, so no auth expectation here
         $this->dashboardRepository
             ->expects($this->once())
             ->method('deleteCourse')
@@ -304,7 +303,7 @@ class DashboardControllerTest extends TestCase
             ->with('/dashboard')
             ->willReturn($expectedResponse);
 
-        $response = $this->controller->deleteCourse($request);
+        $response = $this->dashboardController->deleteCourse($request);
 
         $this->assertSame($expectedResponse, $response);
     }

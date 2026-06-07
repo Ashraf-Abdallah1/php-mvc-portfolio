@@ -22,7 +22,7 @@ class UserControllerTest extends TestCase
 
     private AuthService&MockObject $authService;
 
-    private UserController $controller;
+    private UserController $userController;
 
     protected function setUp(): void
     {
@@ -32,7 +32,7 @@ class UserControllerTest extends TestCase
         $this->responseFactory = $this->createMock(ResponseFactory::class);
         $this->authService = $this->createMock(AuthService::class);
 
-        $this->controller = new UserController(
+        $this->userController = new UserController(
             $this->responseFactory,
             $this->userRepository,
             $this->authService
@@ -49,7 +49,7 @@ class UserControllerTest extends TestCase
             ->with('user/register.html.twig')
             ->willReturn($expectedResponse);
 
-        $response = $this->controller->registerForm(new Request('GET', '/register', [], []));
+        $response = $this->userController->registerForm(new Request('GET', '/register', [], []));
 
         $this->assertSame($expectedResponse, $response);
     }
@@ -83,7 +83,7 @@ class UserControllerTest extends TestCase
             ->with('/')
             ->willReturn($expectedResponse);
 
-        $response = $this->controller->register($request);
+        $response = $this->userController->register($request);
 
         $this->assertSame($expectedResponse, $response);
     }
@@ -114,7 +114,7 @@ class UserControllerTest extends TestCase
             )
             ->willReturn($expectedResponse);
 
-        $response = $this->controller->register($request);
+        $response = $this->userController->register($request);
 
         $this->assertSame($expectedResponse, $response);
     }
@@ -129,7 +129,7 @@ class UserControllerTest extends TestCase
             ->with('user/login.html.twig')
             ->willReturn($expectedResponse);
 
-        $response = $this->controller->loginForm(new Request('GET', '/login', [], []));
+        $response = $this->userController->loginForm(new Request('GET', '/login', [], []));
 
         $this->assertSame($expectedResponse, $response);
     }
@@ -156,7 +156,7 @@ class UserControllerTest extends TestCase
             ->with('/')
             ->willReturn($expectedResponse);
 
-        $response = $this->controller->login($request);
+        $response = $this->userController->login($request);
 
         $this->assertSame($expectedResponse, $response);
     }
@@ -189,7 +189,7 @@ class UserControllerTest extends TestCase
             )
             ->willReturn($expectedResponse);
 
-        $response = $this->controller->login($request);
+        $response = $this->userController->login($request);
 
         $this->assertSame($expectedResponse, $response);
     }
@@ -210,7 +210,7 @@ class UserControllerTest extends TestCase
             ->with('/login')
             ->willReturn($expectedResponse);
 
-        $response = $this->controller->logout($request);
+        $response = $this->userController->logout($request);
 
         $this->assertSame($expectedResponse, $response);
     }
