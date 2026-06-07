@@ -18,10 +18,11 @@ class UserController
     private AuthService $authService;
 
     public function __construct(
-        ResponseFactory $response,
+        ResponseFactory         $response,
         UserRepositoryInterface $userRepository,
-        AuthService $authService,
-    ) {
+        AuthService             $authService,
+    )
+    {
         $this->response = $response;
         $this->userRepository = $userRepository;
         $this->authService = $authService;
@@ -79,6 +80,12 @@ class UserController
                 'password' => $password
             ]
         ]);
+    }
+
+    public function loginGuest(Request $request): Response
+    {
+        $output = $this->authService->login("guest", "guest");
+        return $this->response->redirect('/');
     }
 
     public function logout(Request $request): Response

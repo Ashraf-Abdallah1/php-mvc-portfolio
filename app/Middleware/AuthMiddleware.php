@@ -23,7 +23,8 @@ class AuthMiddleware
         $publicRoutes = [
             '/',
             '/login',
-            '/register'
+            '/register',
+            '/guest',
         ];
 
         if (in_array($request->path, $publicRoutes)) {
