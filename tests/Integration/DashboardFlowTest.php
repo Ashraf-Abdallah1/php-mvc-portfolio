@@ -14,7 +14,7 @@ use Framework\ResponseFactory;
 use Framework\Session;
 use PHPUnit\Framework\TestCase;
 
-class AdminDashboardFlowTest extends TestCase
+class DashboardFlowTest extends TestCase
 {
     private Session $session;
     private DashboardController $dashboardController;
@@ -69,5 +69,12 @@ class AdminDashboardFlowTest extends TestCase
 
         $this->assertStringContainsString("Dashboard", $response->body);
         $this->assertStringContainsString("<form", $response->body);
+    }
+
+    public function testDashboardAccessibleForAll(): void
+    {
+        $response = $this->dashboardController->index();
+
+        $this->assertStringContainsString("dashboard", $response->body);
     }
 }

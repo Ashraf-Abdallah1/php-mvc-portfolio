@@ -37,6 +37,7 @@ class UserController
         $user = new User();
         $username = (string)$request->get('username');
         $password = (string)$request->get('password');
+        $name = (string)$request->get('name');
 
         $errors = $this->checkInputs($username, $password);
 
@@ -44,7 +45,8 @@ class UserController
             return $this->response->view('user/register.html.twig', [
                 'errors' => $errors,
                 'old' => [
-                    'username' => $username
+                    'username' => $username,
+                    'name' => $name,
                 ]
             ]);
         }

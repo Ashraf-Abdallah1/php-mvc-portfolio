@@ -1,7 +1,8 @@
 {% extends 'user/partials.html.twig' %}
 {% block formContent %}
 
-    <div class="p-4 bg-white shadow rounded-4 border-start border-4 border-success">
+    <div class="p-5 bg-white shadow rounded-4 border-start border-4 border-success mx-auto"
+         style="max-width: 400px; width: 75%;">
 
         <h2 class="fw-bold text-success text-center mb-4">Inloggen</h2>
 
@@ -17,9 +18,7 @@
                        value="{{ old.username ?? '' }}"
                        required>
 
-                {% if errors.username %}
-                    <div class="text-danger small mt-1">{{ errors.username|e }}</div>
-                {% endif %}
+
             </div>
 
             <div class="mb-3">
@@ -31,7 +30,10 @@
                        placeholder="password"
                        required>
 
-                {% if errors.password %}
+                {% if errors.username %}
+                    <div class="text-danger small mt-1">{{ errors.username|e }}</div>
+                {% endif %}
+                {% if errors.username or errors.password %}
                     <div class="text-danger small mt-1">{{ errors.password|e }}</div>
                 {% endif %}
             </div>

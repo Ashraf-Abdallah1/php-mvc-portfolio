@@ -39,11 +39,11 @@ class AuthService
         $errors = [];
         $user = $this->userRepository->findByUsername($username);
         if ($user == null) {
-            $errors['username'] = "Username $username niet gevonden";
+            $errors['username'] = "Onbekende gebruiker of wachtwoord onjuist";
             return $errors;
         }
         if (!password_verify($password, $user->getPassword())) {
-            $errors['password'] = "Onbekende gebruiker of wachtwoord onjuist";
+            $errors['password'] = "wachtwoord onjuist";
             return $errors;
         }
 
