@@ -29,7 +29,15 @@
                 <input type="text" name="contact" class="form-control mb-3"
                        value="{{ profile.contact|e }}">
 
-                <button class="btn btn-success px-4">Opslaan</button>
+                <div class="d-flex justify-content-between mt-4">
+                    <a href="/profile" class="btn btn-outline-danger px-4">
+                        Annuleren
+                    </a>
+
+                    <button class="btn btn-success px-4">
+                        Opslaan
+                    </button>
+                </div>
             </form>
 
         </div>
