@@ -50,8 +50,8 @@ docs/                Docker and deployment guides, wireflows
 Requires Docker Desktop.
 
 ```bash
-git clone https://github.com/Ashraf-Abdallah1/itdp-Ashraf-Abdallah1.git
-cd itdp-Ashraf-Abdallah1
+git clone https://github.com/Ashraf-Abdallah1/php-mvc-portfolio.git
+cd php-mvc-portfolio
 docker compose up --build
 docker compose exec web php /var/www/migrate.php migrate
 ```
