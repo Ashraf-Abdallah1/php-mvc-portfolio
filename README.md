@@ -1,34 +1,81 @@
-# Over dit project
+# PHP MVC Portfolio
 
-Dit project is een PHP MVC applicatie die draait in Docker.
-De applicatie gebruikt:
+A personal study portfolio built as a **PHP 8 MVC web application** on a small custom framework, without Laravel or Symfony. It shows my blogs, grades and study progress from my first year of HBO-ICT at HZ University of Applied Sciences.
 
-PHP 8.2 + Apache
-MySQL 8
-phpMyAdmin
-PDO
+> Individual first-year project (2025–2026). The goal was to understand what a framework does under the hood: routing, dependency injection, middleware, repositories and testing.
 
-Dit portfolio is ontwikkeld tijdens het eerste jaar van de opleiding HBO-ICT.
-De applicatie biedt een overzicht van mijn studieactiviteiten, waaronder blogs,
-behaalde cijfers, en studievoortgang.
-Het project laat mijn Cijfers en ervaringen zien gedurende het eerste studiejaar.
+## Features
 
+- **Authentication** with register, login, logout and a guest login
+- **Roles**: admin and user, enforced by auth and admin middleware (401 and 403 pages)
+- **Blog**: create, edit and delete posts as admin, with a delete confirmation
+- **JSON API**: `GET /api/blogs` and `GET /api/blogs/{id}`, used by the front end to load posts with `fetch`
+- **Dashboard**: courses, grades and study credits, editable by the admin
+- **Profile** page and **FAQ** page
+- **Database migrations** via a small CLI command
 
-# Project starten
+## Tech
 
-### Optie 1 starten met docker-compose.yaml (Makelijkste)
+| Area | Used |
+|---|---|
+| Back end | PHP 8.2, PDO, Twig templates |
+| Database | MySQL 8 |
+| Front end | Bootstrap, JavaScript, Chart.js |
+| Infrastructure | Docker, Docker Compose, Apache, phpMyAdmin |
+| Quality | PHPUnit, PHPStan, PHP_CodeSniffer, Deptrac |
+| CI/CD | GitHub Actions, deployed on Railway |
 
-- [Docker handleiding Met Compose](docs/docker-with-compose.md)
+## Architecture
 
+```
+app/
+├── Controllers/     request handling, one controller per feature
+├── Middleware/      AuthMiddleware, AdminMiddleware
+├── Models/          Blog, User, Profile, Dashboard
+├── Repositories/    interfaces and PDO implementations
+├── Services/        AuthService
+└── views/           Twig templates
+src/                 the framework: Kernel, Router, ServiceContainer, Request, Response
+database/            SQL migrations
+tests/               unit tests, integration tests and dummy repositories
+docs/                Docker and deployment guides, wireflows
+```
 
+- **Repository pattern**: controllers depend on repository interfaces, so the tests swap in in-memory dummy repositories instead of a real database
+- **Dependency injection** through a service container
+- **Layer rules checked by Deptrac**, so controllers cannot reach the database directly
 
-### Optie 2   zonder Docker Compose
+## Run it locally
 
-- [Docker handleiding zonder Compose](docs/docker-without-compose.md)
- 
+Requires Docker Desktop.
 
+```bash
+git clone https://github.com/Ashraf-Abdallah1/itdp-Ashraf-Abdallah1.git
+cd itdp-Ashraf-Abdallah1
+docker compose up --build
+docker compose exec web php /var/www/migrate.php migrate
+```
 
- # Deploy to live
+- Application: http://localhost
+- phpMyAdmin: http://localhost:8081
 
-- [Deployment Documentatie](docs/deployment.md)
+More detail: [with Docker Compose](docs/docker-with-compose.md), [without Docker Compose](docs/docker-without-compose.md) and [deployment on Railway](docs/deployment.md).
 
+## Tests and code quality
+
+```bash
+vendor/bin/phpunit --testdox tests
+vendor/bin/phpstan analyse
+vendor/bin/phpcs
+vendor/bin/deptrac
+```
+
+The same four checks run in GitHub Actions on every push and pull request.
+
+## Design
+
+Wireflows for both roles are in [`docs/wireflows`](docs/wireflows).
+
+## Credits
+
+The framework in `src/` is based on the Maestro teaching framework by Frans Blauw (HZ University of Applied Sciences). The application in `app/`, the tests, the Docker setup and the deployment are my own work.

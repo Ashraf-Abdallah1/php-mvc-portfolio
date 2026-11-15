@@ -60,7 +60,7 @@ De Web Service is gekoppeld aan de MySQL service via Railway environment variabl
 | DB_HOST | zephyr.proxy.rlwy.net |
 | DB_NAME | railway |
 | DB_USER | root |
-| DB_PASSWORD | qAIYOTFCVdnoEKFSGFEzZCOmepBGcJpW |
+| DB_PASSWORD | `<set in Railway>` |
 | DB_PORT | 19163 |
 | APP_ENV | production |
 | VIEWS_PATH | app/views |
